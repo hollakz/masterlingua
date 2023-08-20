@@ -1,0 +1,7 @@
+User-agent: *
+
+
+User-agent: Yandex
+
+
+Sitemap: https://masterlingua.pro/sitemap.xml

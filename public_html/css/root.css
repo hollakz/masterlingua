@@ -1,0 +1,18 @@
+:root {
+    --text-color-black: #212121;
+    --color-main-dark: #1f1d1b;
+    --color-button: #e84366;
+    --color-logo-text: #3c2023;
+    --color-dusty-pink: #ffe9ea;
+    --color-gray-stroke: #f2f2f2;
+    --color-mild-pink: #df81ad;
+    --color-white: #ffffff;
+    --color-peach: #e5855d;
+    --color-purple: #b29bc9;
+    --color-blue: #a1c2d1;
+    --color-light-purple: #f2e8fc;
+    --color-gray-text: #999999;
+    --color-error: #ff0000;
+    --color-dark-purple: #ad2e95;
+    --color-mid-pink: #f2e7fb
+}

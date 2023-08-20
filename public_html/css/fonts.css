@@ -1,0 +1,63 @@
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 300;
+    src: url("../fonts/roboto-v30-latin_cyrillic-300.eot");
+    src: local(""), url("../fonts/roboto-v30-latin_cyrillic-300.eot?#iefix") format("embedded-opentype"), url("../fonts/roboto-v30-latin_cyrillic-300.woff2") format("woff2"), url("../fonts/roboto-v30-latin_cyrillic-300.woff") format("woff"), url("../fonts/roboto-v30-latin_cyrillic-300.ttf") format("truetype"), url("../fonts/roboto-v30-latin_cyrillic-300.svg#Roboto") format("svg")
+}
+
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/roboto-v30-latin_cyrillic-regular.eot");
+    src: local(""), url("../fonts/roboto-v30-latin_cyrillic-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/roboto-v30-latin_cyrillic-regular.woff2") format("woff2"), url("../fonts/roboto-v30-latin_cyrillic-regular.woff") format("woff"), url("../fonts/roboto-v30-latin_cyrillic-regular.ttf") format("truetype"), url("../fonts/roboto-v30-latin_cyrillic-regular.svg#Roboto") format("svg")
+}
+
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    src: url("../fonts/roboto-v30-latin_cyrillic-500.eot");
+    src: local(""), url("../fonts/roboto-v30-latin_cyrillic-500.eot?#iefix") format("embedded-opentype"), url("../fonts/roboto-v30-latin_cyrillic-500.woff2") format("woff2"), url("../fonts/roboto-v30-latin_cyrillic-500.woff") format("woff"), url("../fonts/roboto-v30-latin_cyrillic-500.ttf") format("truetype"), url("../fonts/roboto-v30-latin_cyrillic-500.svg#Roboto") format("svg")
+}
+
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 700;
+    src: url("../fonts/roboto-v30-latin_cyrillic-700.eot");
+    src: local(""), url("../fonts/roboto-v30-latin_cyrillic-700.eot?#iefix") format("embedded-opentype"), url("../fonts/roboto-v30-latin_cyrillic-700.woff2") format("woff2"), url("../fonts/roboto-v30-latin_cyrillic-700.woff") format("woff"), url("../fonts/roboto-v30-latin_cyrillic-700.ttf") format("truetype"), url("../fonts/roboto-v30-latin_cyrillic-700.svg#Roboto") format("svg")
+}
+
+@font-face {
+    font-family: "Roboto Condensed";
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/roboto-condensed-v25-latin_cyrillic-regular.eot");
+    src: local(""), url("../fonts/roboto-condensed-v25-latin_cyrillic-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/roboto-condensed-v25-latin_cyrillic-regular.woff2") format("woff2"), url("../fonts/roboto-condensed-v25-latin_cyrillic-regular.woff") format("woff"), url("../fonts/roboto-condensed-v25-latin_cyrillic-regular.ttf") format("truetype"), url("../fonts/roboto-condensed-v25-latin_cyrillic-regular.svg#RobotoCondensed") format("svg")
+}
+
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/open-sans-v34-latin_cyrillic-regular.eot");
+    src: local(""), url("../fonts/open-sans-v34-latin_cyrillic-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/open-sans-v34-latin_cyrillic-regular.woff2") format("woff2"), url("../fonts/open-sans-v34-latin_cyrillic-regular.woff") format("woff"), url("../fonts/open-sans-v34-latin_cyrillic-regular.ttf") format("truetype"), url("../fonts/open-sans-v34-latin_cyrillic-regular.svg#OpenSans") format("svg")
+}
+
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: url("../fonts/open-sans-v34-latin_cyrillic-600.eot");
+    src: local(""), url("../fonts/open-sans-v34-latin_cyrillic-600.eot?#iefix") format("embedded-opentype"), url("../fonts/open-sans-v34-latin_cyrillic-600.woff2") format("woff2"), url("../fonts/open-sans-v34-latin_cyrillic-600.woff") format("woff"), url("../fonts/open-sans-v34-latin_cyrillic-600.ttf") format("truetype"), url("../fonts/open-sans-v34-latin_cyrillic-600.svg#OpenSans") format("svg")
+}
+
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: url("../fonts/open-sans-v34-latin_cyrillic-700.eot");
+    src: local(""), url("../fonts/open-sans-v34-latin_cyrillic-700.eot?#iefix") format("embedded-opentype"), url("../fonts/open-sans-v34-latin_cyrillic-700.woff2") format("woff2"), url("../fonts/open-sans-v34-latin_cyrillic-700.woff") format("woff"), url("../fonts/open-sans-v34-latin_cyrillic-700.ttf") format("truetype"), url("../fonts/open-sans-v34-latin_cyrillic-700.svg#OpenSans") format("svg")
+}
