@@ -5,7 +5,7 @@ $db = new  SQLite3('database.sqlite');
 
 $sql = "CREATE TABLE IF NOT EXISTS users (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
-name TEXT,
+email TEXT,
 password STRING,
 level TEXT,
 integer INTEGER                     

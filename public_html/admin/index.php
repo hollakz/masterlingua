@@ -1,14 +1,17 @@
 <?php
-$users = [
-    'paulchervov' => 'pa$$worLd102',
-    'hollakz' => 'Coca-Holla42',
-    'olga' => 'olga-0-conor-99',
-];
-
-$user = $_SERVER['PHP_AUTH_USER'] ?? null;
+$email = $_SERVER['PHP_AUTH_USER'] ?? null;
 $password = $_SERVER['PHP_AUTH_PW'] ?? null;
 
-if (isset($users[$user]) && $users[$user] === $password) {
+$db = new SQLite3('C:/Users/holla/PhpstormProjects/masterlingua/database/database.sqlite');
+
+$query = "SELECT * FROM users WHERE email = '{$email}'";
+$userData = $db->querySingle($query, true);
+$db->close();
+var_dump($userData);
+exit;
+
+
+if (isset($users[$email]) && $users[$email] === $password) {
 
 } else {
     header('WWW-Authenticate: Basic realm="My Realm"');
@@ -19,8 +22,8 @@ if (isset($users[$user]) && $users[$user] === $password) {
         </div>";
     exit;
 }
-
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -36,7 +39,7 @@ if (isset($users[$user]) && $users[$user] === $password) {
 
 <div class="container col-6">
     <?php
-    echo "<h1>Добро пожаловать в личный кабинет, {$user}!</h1>";
+    echo "<h1>Добро пожаловать в личный кабинет!</h1>";
     ?>
 </div>
 <div class="container">
@@ -95,4 +98,3 @@ if (isset($users[$user]) && $users[$user] === $password) {
 
 </body>
 </html>
-
