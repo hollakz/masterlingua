@@ -6,7 +6,7 @@ $password = $_SERVER['PHP_AUTH_PW'] ?? null;
 if (!isset($username, $password)) {
     header('WWW-Authenticate: Basic realm="Restricted Area"');
     header('HTTP/1.0 401 Unauthorized');
-    echo 'Authentication required';
+    echo "Нет доступа в админку <br> <a href='/'>Вернуться на главную страницу</a><br><a href='/admin'>Попробовать еще раз</a>";
     exit;
 }
 
@@ -30,7 +30,7 @@ try {
 if (!$userData || ($userData['password'] !== $password)) {
     header('WWW-Authenticate: Basic realm="Restricted Area"');
     header('HTTP/1.0 401 Unauthorized');
-    echo 'Authentication required';
+    echo "Нет доступа в админку <br> <a href='/'>Вернуться на главную страницу</a><br><a href='/admin'>Попробовать еще раз</a>";
     exit;
 }
 
