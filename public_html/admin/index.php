@@ -4,11 +4,14 @@ $password = $_SERVER['PHP_AUTH_PW'] ?? null;
 
 $db = new SQLite3('C:/Users/holla/PhpstormProjects/masterlingua/database/database.sqlite');
 
-$query = "SELECT * FROM users WHERE email = '{$email}'";
-$userData = $db->querySingle($query, true);
-$db->close();
-var_dump($userData);
+$email = 'paulchervov';
+$statement = $db->prepare("SELECT * FROM users WHERE email = :sql");
+$statement->bindValue(':email', '$sql');
+$result = $statement->execute();                                                                                                                                                                       $user = $result->fetchArray(SQLITE3_ASSOC);
+//$userData = $result->fetchArray(SQLITE3_ASSOC);
+var_dump($sql);
 exit;
+
 
 
 if (isset($users[$email]) && $users[$email] === $password) {
