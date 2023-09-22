@@ -1,21 +1,28 @@
 <?php
-require ('migration.php');
 
-$db = new  SQLite3('database.sqlite');
+try {
+    $pdo = new PDO('sqlite:./database/database.sqlite');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$sql = "CREATE TABLE IF NOT EXISTS users (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-email TEXT,
-password STRING,
-level TEXT,
-integer INTEGER                     
-)";
-$db->exec($sql);
+    $sqlCreateTable = "CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT,
+        password TEXT,
+        level TEXT,
+        integer INTEGER
+    )";
+    $pdo->exec($sqlCreateTable);
 
-$sql = "INSERT INTO users VALUES (1, 'paulchervov', 'pasSworLd102', 'C1', 'admin'),
-                         (2, 'hollakz', 'Coca-Holla42', 'А1', 'admin'),
-                         (3, 'olga', 'olga-0-conor-99', 'C2', 'admin');";
-$db->exec($sql);
+    $sqlInsertData = "INSERT INTO users (username, password, level, integer) VALUES
+        ('paulcervov', 'pasSworLd102', 'C1', 'admin'),
+        ('hollakz', 'Coca-Holla42', 'А1', 'admin'),
+        ('olga', 'olga-0-conor-99', 'C2', 'admin')";
+    $pdo->exec($sqlInsertData);
+
+    echo "Table created and data inserted successfully.";
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
 
 
 

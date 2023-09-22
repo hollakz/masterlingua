@@ -1,32 +1,41 @@
 <?php
-$email = $_SERVER['PHP_AUTH_USER'] ?? null;
+$username = $_SERVER['PHP_AUTH_USER'] ?? null;
 $password = $_SERVER['PHP_AUTH_PW'] ?? null;
 
-$db = new SQLite3('C:/Users/holla/PhpstormProjects/masterlingua/database/database.sqlite');
-
-$email = 'paulchervov';
-$statement = $db->prepare("SELECT * FROM users WHERE email = :sql");
-$statement->bindValue(':email', '$sql');
-$result = $statement->execute();                                                                                                                                                                       $user = $result->fetchArray(SQLITE3_ASSOC);
-//$userData = $result->fetchArray(SQLITE3_ASSOC);
-var_dump($sql);
-exit;
-
-
-
-if (isset($users[$email]) && $users[$email] === $password) {
-
-} else {
-    header('WWW-Authenticate: Basic realm="My Realm"');
+// если логин или пароль не переданы, показываем окно аутентификации
+if (!isset($username, $password)) {
+    header('WWW-Authenticate: Basic realm="Restricted Area"');
     header('HTTP/1.0 401 Unauthorized');
-    echo "<div>Нет доступа в админку.<br>
-            <a href='/admin/index.php'>Попробовать еще раз</a><br>
-            <a href='/'>На главную</a>
-        </div>";
+    echo 'Authentication required';
     exit;
 }
-?>
 
+// логин и пароль переданы, ищем пользователя в базе по логину
+try {
+    $pdo = new PDO('sqlite:/Users/pavelchervov/PhpstormProjects/masterlingua/database/database.sqlite');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $sql = 'SELECT * FROM users WHERE username like :username';
+    $statement = $pdo->prepare($sql);
+    $statement->bindValue(':username', $username);
+    $statement->execute();
+    $userData = $statement->fetch(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    exit();
+}
+
+// если пользователь не найден в базе или найден, но пароль не совпадает, показываем окно аутентификации
+if (!$userData || ($userData['password'] !== $password)) {
+    header('WWW-Authenticate: Basic realm="Restricted Area"');
+    header('HTTP/1.0 401 Unauthorized');
+    echo 'Authentication required';
+    exit;
+}
+
+// если мы дошли до этой точки, аутентификация пройдена успешно
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -41,58 +50,22 @@ if (isset($users[$email]) && $users[$email] === $password) {
 <body class="page-title">
 
 <div class="container col-6">
-    <?php
-    echo "<h1>Добро пожаловать в личный кабинет!</h1>";
-    ?>
+
 </div>
 <div class="container">
-    <nav class="navbar bg-body-tertiary m-5">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Главная страница </a>
-            <button type="button" class="btn btn-warning">Logout</button>
+        <nav class="navbar bg-body-tertiary m-5">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">Главная страница </a>
+                <button type="button" class="btn btn-warning">Logout</button>
+            </div>
+        </nav>
+        <div class="alert alert-success">
+            Добро пожаловать, <?php echo $username ?>!
         </div>
-    </nav>
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <img src="..." class="card-img-top" alt="...">
 
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <img src="..." class="card-img-top" alt="...">
-
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <img src="..." class="card-img-top" alt="...">
-
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
