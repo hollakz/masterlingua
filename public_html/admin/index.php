@@ -25,11 +25,14 @@ try {
     $statement->bindValue(':username', $username);
     $statement->execute();
     $userData = $statement->fetch(PDO::FETCH_ASSOC);
+    $level = $userData['level'];
+
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
     exit();
 }
+
 
 // если пользователь не найден в базе или найден, но пароль не совпадает, показываем окно аутентификации
 if (!$userData || ($userData['password'] !== $password)) {
@@ -50,24 +53,25 @@ if (!$userData || ($userData['password'] !== $password)) {
     <title>TEST BOOTSTRAP ADMIN</title>
 </head>
 <body class="page-title">
-
-<div class="container col-6">
-
-</div>
-<div class="container">
-    <nav class="navbar bg-body-tertiary m-5">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Главная страница </a>
-            <button type="button" class="btn btn-warning">Logout</button>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Главная страница </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <span class="nav-link active" aria-current="page" >Ваш уровень: <?php echo $level ?></span>
+                </li>
+            </ul>
         </div>
-    </nav>
-    <div class="alert alert-success">
-        Добро пожаловать, <?php echo $username ?>!
     </div>
-</div>
-
-<div class="container">
-
+</nav>
+<div class="title m-2">
+    <div class="alert alert-success">
+        Добро пожаловать, <?php echo $username ?>, ваш уровень: <?php echo $level ?>.
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
