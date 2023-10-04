@@ -6,7 +6,7 @@ try {
 
     $sqlCreateTable = "CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT,
+        username TEXT UNIQUE ,
         password TEXT,
         level TEXT,
         integer INTEGER
