@@ -58,7 +58,9 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                     <div class="alert <?php if($registrationError): ?>alert-danger<?php else: ?>alert-success<?php endif; ?>" role="alert">
                         <?php echo $registrationMessage; ?>
                         <a href="/admin">В админку</a>
+                        <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
+
                 <?php endif; ?>
 
                 <form action="" method="post">
