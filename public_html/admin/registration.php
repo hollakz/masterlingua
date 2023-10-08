@@ -1,5 +1,5 @@
 <?php
-$pdo = new PDO('sqlite:/Users/pavelchervov/PhpstormProjects/masterlingua/database/database.sqlite');
+$pdo = new PDO('sqlite:C:\Users\holla\PhpstormProjects\masterlingua\database\database.sqlite');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $registrationMessage = '';
@@ -14,10 +14,12 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 
         try {
 
-            $sqlInsert = "INSERT INTO users (username, password) VALUES (:username, :password)";
+            $sqlInsert = "INSERT INTO users (username, password, level, integer) VALUES (:username, :password, :level, :integer)";
             $stmt = $pdo->prepare($sqlInsert);
             $stmt->bindValue(':username', strtolower($username));
             $stmt->bindValue(':password', $password);
+            $stmt->bindValue(':level', 'A1');
+            $stmt->bindValue(':integer', 'user');
             $stmt->execute();
             $registrationMessage = 'Регистрация прошла успешно!';
         } catch (PDOException $e) {
