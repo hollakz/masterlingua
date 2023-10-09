@@ -1,25 +1,43 @@
 <?php
-$users = [
-    'paulchervov' => 'pa$$worLd102',
-    'hollakz' => 'Coca-Holla42',
-    'olga' => 'olga-0-conor-99',
-];
-
-$user = $_SERVER['PHP_AUTH_USER'] ?? null;
+$username = $_SERVER['PHP_AUTH_USER'] ?? null;
 $password = $_SERVER['PHP_AUTH_PW'] ?? null;
 
-if (isset($users[$user]) && $users[$user] === $password) {
-
-} else {
-    header('WWW-Authenticate: Basic realm="My Realm"');
+function displayAuth()
+{
+    header('WWW-Authenticate: Basic realm="Restricted Area"');
     header('HTTP/1.0 401 Unauthorized');
-    echo "<div>Нет доступа в админку.<br>
-            <a href='/admin/index.php'>Попробовать еще раз</a><br>
-            <a href='/'>На главную</a>
-        </div>";
+    echo "Нет доступа в админку <br> <a href='/'>Вернуться на главную страницу</a><br><a href='/admin'>Попробовать еще раз</a>";
     exit;
 }
 
+// если логин или пароль не переданы, показываем окно аутентификации
+if (!isset($username, $password)) {
+    displayAuth();
+}
+
+// логин и пароль переданы, ищем пользователя в базе по логину
+try {
+    $pdo = new PDO('sqlite:C:\Users\holla\PhpstormProjects\masterlingua\database\database.sqlite');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $sql = 'SELECT * FROM users WHERE username like :username';
+    $statement = $pdo->prepare($sql);
+    $statement->bindValue(':username', $username);
+    $statement->execute();
+    $userData = $statement->fetch(PDO::FETCH_ASSOC);
+    $level = $userData['level'];
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    exit();
+}
+
+// если пользователь не найден в базе или найден, но пароль не совпадает, показываем окно аутентификации
+if (!$userData || ($userData['password'] !== $password)) {
+    displayAuth();
+}
+
+// если мы дошли до этой точки, аутентификация пройдена успешно
 ?>
 <!doctype html>
 <html lang="en">
@@ -30,59 +48,30 @@ if (isset($users[$user]) && $users[$user] === $password) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <title>TEST BOOTSTRAP ADMIN</title>
+    <title>Админка. Главная страница</title>
 </head>
-<body class="page-title">
-
-<div class="container col-6">
-    <?php
-    echo "<h1>Добро пожаловать в личный кабинет, {$user}!</h1>";
-    ?>
-</div>
-<div class="container">
-    <nav class="navbar bg-body-tertiary m-5">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Главная страница </a>
-            <button type="button" class="btn btn-warning">Logout</button>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <div class="row">
+            <a class="navbar-brand" href="/">Главная страница сайта </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
-    </nav>
-</div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6">
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <img src="..." class="card-img-top" alt="...">
-
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <img src="..." class="card-img-top" alt="...">
-
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <img src="..." class="card-img-top" alt="...">
-
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+            <div class="registration pt-3">
+                <h3 class="text-center">Главная страница админки</h3>
+                <div class="lead text-center">
+                    Добро пожаловать, <strong><?php echo $username ?></strong>, ваш уровень: <span
+                            class="badge bg-secondary"><?php echo $level ?></span>
                 </div>
             </div>
         </div>
@@ -95,4 +84,3 @@ if (isset($users[$user]) && $users[$user] === $password) {
 
 </body>
 </html>
-
