@@ -27,12 +27,10 @@ try {
     $userData = $statement->fetch(PDO::FETCH_ASSOC);
     $level = $userData['level'];
 
-
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
     exit();
 }
-
 
 // если пользователь не найден в базе или найден, но пароль не совпадает, показываем окно аутентификации
 if (!$userData || ($userData['password'] !== $password)) {
@@ -50,27 +48,33 @@ if (!$userData || ($userData['password'] !== $password)) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <title>TEST BOOTSTRAP ADMIN</title>
+    <title>Админка. Главная страница</title>
 </head>
-<body class="page-title">
+<body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">Главная страница </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <span class="nav-link active" aria-current="page" >Ваш уровень: <?php echo $level ?></span>
-                </li>
-            </ul>
+        <div class="row">
+            <a class="navbar-brand" href="/">Главная страница сайта </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
     </div>
 </nav>
-<div class="title m-2">
-    <div class="alert alert-success">
-        Добро пожаловать, <?php echo $username ?>, ваш уровень: <?php echo $level ?>.
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6">
+
+            <div class="registration pt-3">
+                <h3 class="text-center">Главная страница админки</h3>
+                <div class="lead text-center">
+                    Добро пожаловать, <strong><?php echo $username ?></strong>, ваш уровень: <span
+                            class="badge bg-secondary"><?php echo $level ?></span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

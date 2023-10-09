@@ -9,11 +9,11 @@ try {
         username TEXT UNIQUE ,
         password TEXT,
         level TEXT,
-        integer INTEGER
+        role TEXT
     )";
     $pdo->exec($sqlCreateTable);
 
-    $sqlInsertData = "INSERT INTO users (username, password, level, integer) VALUES
+    $sqlInsertData = "INSERT INTO users (username, password, level, role) VALUES
         ('admin', 'pasSworLd102', 'A1', 'admin')";
     $pdo->exec($sqlInsertData);
 
