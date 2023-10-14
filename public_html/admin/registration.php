@@ -9,17 +9,23 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 
     $username = mb_substr($_POST['username'] ?? '', 0, 20);
     $password = mb_substr($_POST['password'] ?? '', 0, 10);
+    $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
+    $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
+    $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
 
     if (!empty($username) && !empty($password)) {
 
         try {
 
-            $sqlInsert = "INSERT INTO users (username, password, level, role) VALUES (:username, :password, :level, :role)";
+            $sqlInsert = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth) VALUES (:username, :password, :level, :role, :first_name, :last_name, :date_of_birth)";
             $stmt = $pdo->prepare($sqlInsert);
             $stmt->bindValue(':username', strtolower($username));
             $stmt->bindValue(':password', $password);
             $stmt->bindValue(':level', 'A1');
             $stmt->bindValue(':role', 'student');
+            $stmt->bindValue(':first_name', $first_name);
+            $stmt->bindValue(':last_name', $last_name);
+            $stmt->bindValue(':date_of_birth', $date_of_birth);
             $stmt->execute();
             $registrationMessage = 'Регистрация прошла успешно!';
         } catch (PDOException $e) {
@@ -77,6 +83,21 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                     <div class="mb-3">
                         <label for="password" class="form-label">Пароль</label>
                         <input type="password" class="form-control" id="password" name="password" minlength="1"
+                               maxlength="10" required="required">
+                    </div>
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">First name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" minlength="1"
+                               maxlength="10" required="required">
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Last name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" minlength="1"
+                               maxlength="10" required="required">
+                    </div>
+                    <div class="mb-3">
+                        <label for="date_of_birth" class="form-label">Date of birth</label>
+                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" minlength="1"
                                maxlength="10" required="required">
                     </div>
                     <button type="submit" class="btn btn-primary" name="register">Зарегистрироваться</button>
