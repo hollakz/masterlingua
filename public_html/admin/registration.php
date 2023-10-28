@@ -13,7 +13,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
 
-    if (!empty($username) && !empty($password)) {
+    if (!empty($username) && !empty($password) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth)) {
 
         try {
 
@@ -37,6 +37,9 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                 $registrationMessage = 'Ошибка регистрации, обратитесь в службу поддержки!';
             }
         }
+    } else {
+        $registrationError = true;
+        $registrationMessage = 'Вы не заполнили все поля!';
     }
 }
 ?>
@@ -64,7 +67,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                     <div class="alert <?php if ($registrationError): ?>alert-danger<?php else: ?>alert-success<?php endif; ?>"
                          role="alert">
                         <?php echo $registrationMessage; ?>
-                        <a href="/admin">В админку</a>
+                        <?php if (!$registrationError): ?><a href="/admin">В админку</a><?php endif; ?>
                         <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
                                 aria-label="Close"></button>
                     </div>
