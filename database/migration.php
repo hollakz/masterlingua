@@ -9,7 +9,10 @@ try {
         username TEXT UNIQUE ,
         password TEXT,
         level TEXT,
-        role TEXT
+        role TEXT,
+        first_name TEXT,
+        last_name TEXT,
+        date_of_birth TEXT
     )";
     $pdo->exec($sqlCreateTable);
 
