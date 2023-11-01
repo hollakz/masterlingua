@@ -77,8 +77,8 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                 <form action="" method="post">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" name="username" id="username"
-                               aria-describedby="emailHelp" minlength="1" maxlength="20" required="required">
+                        <input type="text" class="form-control" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>" id="username"
+                               aria-describedby="emailHelp" minlength="1" maxlength="20" required="required" >
                         <div id="emailHelp" class="form-text">Мы никогда не передадим ваш адрес электронной почты
                             кому-либо еще.
                         </div>
@@ -86,22 +86,22 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                     <div class="mb-3">
                         <label for="password" class="form-label">Пароль</label>
                         <input type="password" class="form-control" id="password" name="password" minlength="1"
-                               maxlength="10" required="required">
+                               maxlength="10" required="required" value="<?php echo isset($_POST['password']) ? $_POST['password'] : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="first_name" class="form-label">First name</label>
                         <input type="text" class="form-control" id="first_name" name="first_name" minlength="1"
-                               maxlength="10" required="required">
+                               maxlength="10" required="required" value="<?php echo isset($_POST['first_name']) ? $_POST['first_name'] : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="last_name" class="form-label">Last name</label>
                         <input type="text" class="form-control" id="last_name" name="last_name" minlength="1"
-                               maxlength="10" required="required">
+                               maxlength="10" required="required" value="<?php echo isset($_POST['last_name']) ? $_POST['last_name'] : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="date_of_birth" class="form-label">Date of birth</label>
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" minlength="1"
-                               maxlength="10" required="required">
+                               maxlength="10" required="required" value="<?php echo isset($_POST['date_of_birth']) ? $_POST['date_of_birth'] : ''; ?>">
                     </div>
                     <button type="submit" class="btn btn-primary" name="register">Зарегистрироваться</button>
                     <a class="btn btn-light inline-block" href="/admin/registration.php" role="button">Сброс</a>

@@ -20,29 +20,23 @@ $pdo = null;
     <title>Студенты</title>
 </head>
 <body>
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">username</th>
-        <th scope="col">password</th>
-        <th scope="col">level</th>
-        <th scope="col">role</th>
-        <th scope="col">first_name</th>
-        <th scope="col">last_name</th>
-        <th scope="col">date_of_birth</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($students as $student) { ?>
-        <tr>
-            <?php foreach ($student as $col_value) { ?>
-                <td><?php echo $col_value ?></td>
-            <?php } ?>
-        </tr>
-    <?php } ?>
-    </tbody>
-</table>
+<div class="container">
+<div class="row row-cols-4">
+    <?php foreach ($students as $student): ?>
+        <div class="col">
+        <div class="card mt-2">
+            <img src="../uploads/students/student-stub.jpg" class="card-img-top" alt="Студент-заглушка">
+
+            <div class="card-body">
+                <h5 class="card-title"><?php echo $student['first_name']; ?> <?php echo $student['last_name']; ?></h5>
+                <p class="card-text"> <span class="badge bg-secondary"><?php echo $student['level']; ?></span> <?php echo (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;?> года </p>
+                <a href="/admin/student.php?id=<?php echo $student['id']?>" class="btn btn-primary">Редактировать</a>
+            </div>
+        </div>
+    </div>
+    <?php endforeach; ?>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"

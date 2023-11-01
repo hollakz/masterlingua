@@ -2,9 +2,10 @@
 $pdo = new PDO('sqlite:C:\Users\holla\PhpstormProjects\masterlingua\database\database.sqlite');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$query = "SELECT * FROM users WHERE id = 7";
+$query = "SELECT * FROM users WHERE id = $_GET[id]";
 $stmt = $pdo->query($query);
 $student = $stmt->fetch(PDO::FETCH_ASSOC);
+
 
 $editMessage = '';
 $editError = false;
