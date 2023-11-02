@@ -1,6 +1,5 @@
 <?php
-$pdo = new PDO('sqlite:C:\Users\holla\PhpstormProjects\masterlingua\database\database.sqlite');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+require __DIR__ . '/include/database.php';
 
 $registrationMessage = '';
 $registrationError = false;
