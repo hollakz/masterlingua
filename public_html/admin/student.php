@@ -1,6 +1,6 @@
 <?php
-$pdo = new PDO('sqlite:C:\Users\holla\PhpstormProjects\masterlingua\database\database.sqlite');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+require __DIR__ . '/include/database.php';
+require __DIR__ . '/include/auth.php';
 
 $query = "SELECT * FROM users WHERE id = $_GET[id]";
 $stmt = $pdo->query($query);
@@ -61,6 +61,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     <title>Изменение данных студента</title>
 </head>
 <body>
+<?php require __DIR__ . '/include/navbar.php'; ?>
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
@@ -109,7 +110,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                maxlength="10" required="required" value="<?php echo $student['date_of_birth']; ?>">
     </div>
     <button type="submit" class="btn btn-primary" name="register">Изменить</button>
-    <a class="btn btn-light inline-block" href="/admin/student.php" role="button">Сброс</a>
+    <a class="btn btn-light inline-block" href="/admin/students.php" role="button">Сброс</a>
 </form>
             </div>
         </div>

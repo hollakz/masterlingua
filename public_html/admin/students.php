@@ -1,6 +1,6 @@
 <?php
-$pdo = new PDO('sqlite:C:\Users\holla\PhpstormProjects\masterlingua\database\database.sqlite');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+require __DIR__ . '/include/database.php';
+require __DIR__ . '/include/auth.php';
 
 $query = "SELECT * FROM users WHERE role = 'student'";
 $stmt = $pdo->query($query);
@@ -20,21 +20,26 @@ $pdo = null;
     <title>Студенты</title>
 </head>
 <body>
+<?php require __DIR__ . '/include/navbar.php'; ?>
 <div class="container">
 <div class="row row-cols-4">
-    <?php foreach ($students as $student): ?>
-        <div class="col">
-        <div class="card mt-2">
-            <img src="../uploads/students/student-stub.jpg" class="card-img-top" alt="Студент-заглушка">
+    <?php if(!empty($students)): ?>
+        <?php foreach ($students as $student): ?>
+            <div class="col">
+            <div class="card mt-2">
+                <img src="../uploads/students/student-stub.jpg" class="card-img-top" alt="Студент-заглушка">
 
-            <div class="card-body">
-                <h5 class="card-title"><?php echo $student['first_name']; ?> <?php echo $student['last_name']; ?></h5>
-                <p class="card-text"> <span class="badge bg-secondary"><?php echo $student['level']; ?></span> <?php echo (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;?> года </p>
-                <a href="/admin/student.php?id=<?php echo $student['id']?>" class="btn btn-primary">Редактировать</a>
+                <div class="card-body">
+                    <h5 class="card-title"><?php echo $student['first_name']; ?> <?php echo $student['last_name']; ?></h5>
+                    <p class="card-text"> <span class="badge bg-secondary"><?php echo $student['level']; ?></span> <?php echo (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;?> года </p>
+                    <a href="/admin/student.php?id=<?php echo $student['id']?>" class="btn btn-primary">Редактировать</a>
+                </div>
             </div>
         </div>
-    </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="alert">Студенты не найдены</div>
+    <?php endif; ?>
     </div>
 </div>
 

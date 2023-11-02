@@ -1,43 +1,6 @@
 <?php
-$username = $_SERVER['PHP_AUTH_USER'] ?? null;
-$password = $_SERVER['PHP_AUTH_PW'] ?? null;
-
-function displayAuth()
-{
-    header('WWW-Authenticate: Basic realm="Restricted Area"');
-    header('HTTP/1.0 401 Unauthorized');
-    echo "Нет доступа в админку <br> <a href='/'>Вернуться на главную страницу</a><br><a href='/admin'>Попробовать еще раз</a>";
-    exit;
-}
-
-// если логин или пароль не переданы, показываем окно аутентификации
-if (!isset($username, $password)) {
-    displayAuth();
-}
-
-// логин и пароль переданы, ищем пользователя в базе по логину
-try {
-    $pdo = new PDO('sqlite:C:\Users\holla\PhpstormProjects\masterlingua\database\database.sqlite');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $sql = 'SELECT * FROM users WHERE username like :username';
-    $statement = $pdo->prepare($sql);
-    $statement->bindValue(':username', $username);
-    $statement->execute();
-    $userData = $statement->fetch(PDO::FETCH_ASSOC);
-    $level = $userData['level'];
-
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-    exit();
-}
-
-// если пользователь не найден в базе или найден, но пароль не совпадает, показываем окно аутентификации
-if (!$userData || ($userData['password'] !== $password)) {
-    displayAuth();
-}
-
-// если мы дошли до этой точки, аутентификация пройдена успешно
+require __DIR__ . '/include/database.php';
+require __DIR__ . '/include/auth.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -51,21 +14,7 @@ if (!$userData || ($userData['password'] !== $password)) {
     <title>Админка. Главная страница</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <div class="row-cols-2">
-            <a class="navbar-brand" href="/">Главная страница сайта </a>
-            <?php if ($userData['role'] !== 'student'): ?>
-                <a class="navbar-brand" href="/admin/students.php">Список студентов</a>
-            <?php endif; ?>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-    </div>
-</nav>
+<?php require __DIR__ . '/include/navbar.php'; ?>
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
