@@ -13,7 +13,7 @@
 3. `php -S localhost:8000 -t public_html/`
    
 ## Деплой в продакшн
-1. 'git reset --hard'
-2. 'gist status (убеждаемся что изменения откатились)'
-3. 'git push'
-4. 'идем в admin/includes/database.php и прописываем путь до базы'
+1. `git reset --hard`
+2. `gist status (убеждаемся что изменения откатились)`
+3. `git push`
+4. `идем в admin/includes/database.php и прописываем путь до базы`
