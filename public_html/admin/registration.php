@@ -12,35 +12,63 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
 
-    if (!empty($username) && !empty($password) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth)) {
+    try {
+        $date_of_birth = (new DateTime($date_of_birth))->format('Y-m-d');
 
-        try {
+        //Проверка даты рождения
+        $minDate = (new DateTime('-10 years'))->format('Y-m-d');
 
-            $sqlInsert = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth) VALUES (:username, :password, :level, :role, :first_name, :last_name, :date_of_birth)";
-            $stmt = $pdo->prepare($sqlInsert);
-            $stmt->bindValue(':username', strtolower($username));
-            $stmt->bindValue(':password', $password);
-            $stmt->bindValue(':level', 'A1');
-            $stmt->bindValue(':role', 'student');
-            $stmt->bindValue(':first_name', $first_name);
-            $stmt->bindValue(':last_name', $last_name);
-            $stmt->bindValue(':date_of_birth', $date_of_birth);
-            $stmt->execute();
-            $registrationMessage = 'Регистрация прошла успешно!';
-        } catch (PDOException $e) {
-
+        if ($date_of_birth > $minDate) {
+// Ошибка, дата рождения меньше 10 лет назад
+            $registrationMessage = 'Дата рождения должна быть не моложе 10 лет назад';
             $registrationError = true;
-            if (str_contains($e->getMessage(), 'UNIQUE')) {
-                $registrationMessage = 'Пользователь с таким username уже существует, придумайте другой username.';
-            } else {
-                $registrationMessage = 'Ошибка регистрации, обратитесь в службу поддержки!';
-            }
+        } else {
+// Дата рождения прошла проверку, можно использовать ее
+            $registrationMessage = '';
+            $registrationError = false;
         }
-    } else {
+
+    } catch (\Exception $e) {
+        $registrationMessage = 'Дата рождения имеет некорректный формат';
         $registrationError = true;
-        $registrationMessage = 'Вы не заполнили все поля!';
     }
+
+    if (!$registrationError) {
+
+        if (!empty($username) && !empty($password) && !empty($first_name) && !empty($last_name)) {
+
+            try {
+
+                $sqlInsert = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth) VALUES (:username, :password, :level, :role, :first_name, :last_name, :date_of_birth)";
+                $stmt = $pdo->prepare($sqlInsert);
+                $stmt->bindValue(':username', strtolower($username));
+                $stmt->bindValue(':password', $password);
+                $stmt->bindValue(':level', 'A1');
+                $stmt->bindValue(':role', 'student');
+                $stmt->bindValue(':first_name', $first_name);
+                $stmt->bindValue(':last_name', $last_name);
+                $stmt->bindValue(':date_of_birth', $date_of_birth);
+                $stmt->execute();
+                $registrationMessage = 'Регистрация прошла успешно!';
+                $registrationError = false;
+                $_POST = [];
+            } catch (PDOException $e) {
+
+                $registrationError = true;
+                if (str_contains($e->getMessage(), 'UNIQUE')) {
+                    $registrationMessage = 'Пользователь с таким username уже существует, придумайте другой username.';
+                } else {
+                    $registrationMessage = 'Ошибка регистрации, обратитесь в службу поддержки!';
+                }
+            }
+        } else {
+            $registrationError = true;
+            $registrationMessage = 'Вы не заполнили все поля!';
+        }
+    }
+
 }
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -76,8 +104,9 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                 <form action="" method="post">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>" id="username"
-                               aria-describedby="emailHelp" minlength="1" maxlength="20" required="required" >
+                        <input type="text" class="form-control" name="username"
+                               value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>" id="username"
+                               aria-describedby="emailHelp" minlength="1" maxlength="20" required="required">
                         <div id="emailHelp" class="form-text">Мы никогда не передадим ваш адрес электронной почты
                             кому-либо еще.
                         </div>
@@ -85,24 +114,26 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                     <div class="mb-3">
                         <label for="password" class="form-label">Пароль</label>
                         <input type="password" class="form-control" id="password" name="password" minlength="1"
-                               maxlength="10" required="required" value="<?php echo isset($_POST['password']) ? $_POST['password'] : ''; ?>">
+                               maxlength="10" required="required"
+                               value="<?php echo isset($_POST['password']) ? $_POST['password'] : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="first_name" class="form-label">First name</label>
                         <input type="text" class="form-control" id="first_name" name="first_name" minlength="1"
-                               maxlength="10" required="required" value="<?php echo isset($_POST['first_name']) ? $_POST['first_name'] : ''; ?>">
+                               maxlength="10" required="required"
+                               value="<?php echo isset($_POST['first_name']) ? $_POST['first_name'] : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="last_name" class="form-label">Last name</label>
                         <input type="text" class="form-control" id="last_name" name="last_name" minlength="1"
-                               maxlength="10" required="required" value="<?php echo isset($_POST['last_name']) ? $_POST['last_name'] : ''; ?>">
+                               maxlength="10" required="required" value="<?php echo $_POST['last_name'] ?? ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="date_of_birth" class="form-label">Date of birth</label>
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" minlength="1"
-                               maxlength="10" required="required" value="<?php echo isset($_POST['date_of_birth']) ? $_POST['date_of_birth'] : ''; ?>">
+                               maxlength="10" required="required" value="<?php echo $date_of_birth ?? ''; ?>">
                     </div>
-                    <button type="submit" class="btn btn-primary" name="register">Зарегистрироваться</button>
+                    <button type="submit" onc class="btn btn-primary" name="register">Зарегистрироваться</button>
                     <a class="btn btn-light inline-block" href="/admin/registration.php" role="button">Сброс</a>
                 </form>
 
