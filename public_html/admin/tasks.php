@@ -3,10 +3,14 @@ require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
 
-$query = "SELECT * FROM tasks WHERE teacher_id = $user[id]";
+$query = "SELECT tasks.id, tasks.title, tasks.description, users.first_name, users.last_name
+FROM tasks
+JOIN users ON tasks.student_id = users.id
+WHERE tasks.teacher_id = $user[id]";
 $stmt = $pdo->query($query);
 $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $pdo = null;
+
 ?>
 
 <!doctype html>
@@ -32,7 +36,7 @@ $pdo = null;
 
                 <div class="card-body">
                     <h5 class="card-title"> <span class="badge bg-secondary"><?php echo $task['title']; ?></h5>
-                    <p class="card-text">student_id: <?php echo $task['student_id']; ?></p>
+                    <p class="card-text">Студент: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
                     <a href="/admin/task.php?id=<?php echo $task['id']?>" class="btn btn-primary">Просмотр задания</a>
 
                 </div>
@@ -50,3 +54,4 @@ $pdo = null;
         crossorigin="anonymous"></script>
 </body>
 </html>
+
