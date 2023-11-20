@@ -7,6 +7,12 @@
             <?php if ($user['role'] !== 'student'): ?>
                 <a class="navbar-brand" href="/admin/students.php">Список студентов</a>
             <?php endif; ?>
+            <?php if ($user['role'] !== 'student'): ?>
+                <a class="navbar-brand" href="/admin/teacher_tasks.php">Задания</a>
+            <?php endif; ?>
+            <?php if ($user['role'] !== 'teacher'): ?>
+                <a class="navbar-brand" href="/admin/student_tasks.php">Задания</a>
+            <?php endif; ?>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
