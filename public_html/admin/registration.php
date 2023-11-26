@@ -8,6 +8,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 
     $username = mb_substr($_POST['username'] ?? '', 0, 20);
     $password = mb_substr($_POST['password'] ?? '', 0, 10);
+    $password = password_hash($_REQUEST['password'], PASSWORD_BCRYPT, ['cost' => 12]);
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
@@ -51,7 +52,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                 $stmt->execute();
                 $registrationMessage = 'Регистрация прошла успешно!';
                 $registrationError = false;
-                $_POST = [];
+
             } catch (PDOException $e) {
 
                 $registrationError = true;
