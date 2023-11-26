@@ -22,10 +22,10 @@ $pdo = null;
 <body>
 <?php require __DIR__ . '/include/navbar.php'; ?>
 <div class="container">
-<div class="row row-cols-4">
+<div class="row">
     <?php if(!empty($students)): ?>
         <?php foreach ($students as $student): ?>
-            <div class="col">
+            <div class="col-6 col-sm-3">
             <div class="card mt-2">
                 <img src="../uploads/students/student-stub.jpg" class="card-img-top" alt="Студент-заглушка">
 

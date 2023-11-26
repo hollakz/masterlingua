@@ -27,17 +27,17 @@ $pdo = null;
 <body>
 <?php require __DIR__ . '/include/navbar.php'; ?>
 <div class="container">
-<div class="row row-cols-4">
+<div class="row">
     <?php if(!empty($tasks)): ?>
         <?php foreach ($tasks as $task): ?>
-            <div class="col">
+            <div class="col-6 col-sm-3">
             <div class="card mt-2">
                 <img src="../uploads/students/student-stub.jpg" class="card-img-top" alt="Студент-заглушка">
 
                 <div class="card-body">
                     <h5 class="card-title"> <span class="badge bg-secondary"><?php echo $task['title']; ?></h5>
                     <p class="card-text">Учитель: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
-                    <a href="/admin/task.php?id=<?php echo $task['id']?>" class="btn btn-primary">Просмотр задания</a>
+                    <a href="/admin/show_task.php?id=<?php echo $task['id']?>" class="btn btn-primary">Просмотр задания</a>
 
                 </div>
             </div>

@@ -22,22 +22,22 @@ $pdo = null;
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <title>Студенты</title>
+    <title>Учитель-задание</title>
 </head>
 <body>
 <?php require __DIR__ . '/include/navbar.php'; ?>
 <div class="container">
-<div class="row row-cols-4">
+<div class="row">
     <?php if(!empty($tasks)): ?>
         <?php foreach ($tasks as $task): ?>
-            <div class="col">
+            <div class="col-6 col-sm-3">
             <div class="card mt-2">
                 <img src="../uploads/teachers/teacher-stub.jpeg" class="card-img-top" alt="Учитель-заглушка">
 
                 <div class="card-body">
                     <h5 class="card-title"> <span class="badge bg-secondary"><?php echo $task['title']; ?></h5>
                     <p class="card-text">Студент: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
-                    <a href="/admin/task.php?id=<?php echo $task['id']?>" class="btn btn-primary">Просмотр задания</a>
+                    <a href="/admin/show_task.php?id=<?php echo $task['id']?>" class="btn btn-primary">Просмотр задания</a>
 
                 </div>
             </div>
