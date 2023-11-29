@@ -2,15 +2,29 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
-
 $query = "SELECT tasks.id, tasks.title, tasks.description, users.first_name, users.last_name
 FROM tasks
 JOIN users ON tasks.student_id = users.id
 WHERE tasks.teacher_id = $user[id]";
+
+$stmt = $pdo->query($query);
+$tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$query_students = "SELECT u.id, u.first_name, u.last_name 
+FROM users u 
+LEFT JOIN tasks t ON (t.student_id = u.id) 
+WHERE u.role = 'student' AND t.teacher_id = $user[id]";
+$stmt_students = $pdo->query($query_students);
+$students = $stmt_students->fetchAll(PDO::FETCH_ASSOC);
+
+if  (isset($_GET['student_id'])) {
+    $student_id = $_GET['student_id'];
+    $query .= " AND tasks.student_id = {$student_id}";
+}
+
 $stmt = $pdo->query($query);
 $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $pdo = null;
-
 ?>
 
 <!doctype html>
@@ -27,25 +41,33 @@ $pdo = null;
 <body>
 <?php require __DIR__ . '/include/navbar.php'; ?>
 <div class="container">
-<div class="row">
-    <?php if(!empty($tasks)): ?>
-        <?php foreach ($tasks as $task): ?>
-            <div class="col-6 col-sm-3">
-            <div class="card mt-2">
-                <img src="../uploads/teachers/teacher-stub.jpeg" class="card-img-top" alt="Учитель-заглушка">
-
-                <div class="card-body">
-                    <h5 class="card-title"> <span class="badge bg-secondary"><?php echo $task['title']; ?></h5>
-                    <p class="card-text">Студент: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
-                    <a href="/admin/show_task.php?id=<?php echo $task['id']?>" class="btn btn-primary">Просмотр задания</a>
-
-                </div>
-            </div>
-        </div>
+    <select class="mt-2" name="student_id">
+        <?php foreach ($students as $student): ?>
+            <option value="<?php echo $student['id']; ?>"><?php echo $student['first_name'] . ' ' . $student['last_name']; ?></option>
         <?php endforeach; ?>
-    <?php else: ?>
-        <div class="alert">Студенты не найдены</div>
-    <?php endif; ?>
+    </select>
+</div>
+<div class="container">
+    <div class="row">
+        <?php if (!empty($tasks)): ?>
+            <?php foreach ($tasks as $task): ?>
+                <div class="col-6 col-sm-3">
+                    <div class="card mt-2">
+                        <img src="../uploads/teachers/teacher-stub.jpeg" class="card-img-top" alt="Учитель-заглушка">
+
+                        <div class="card-body">
+                            <h5 class="card-title"><span class="badge bg-secondary"><?php echo $task['title']; ?></h5>
+                            <p class="card-text">
+                                Студент: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
+                            <a href="/admin/show_task.php?id=<?php echo $task['id'] ?>" class="btn btn-primary">Просмотр
+                                задания</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="alert">Студенты не найдены</div>
+        <?php endif; ?>
     </div>
 </div>
 
