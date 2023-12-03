@@ -17,7 +17,7 @@ WHERE u.role = 'student' AND t.teacher_id = $user[id]";
 $stmt_students = $pdo->query($query_students);
 $students = $stmt_students->fetchAll(PDO::FETCH_ASSOC);
 
-if  (isset($_GET['student_id'])) {
+if (isset($_GET['student_id'])) {
     $student_id = $_GET['student_id'];
     $query .= " AND tasks.student_id = {$student_id}";
 }
@@ -25,6 +25,7 @@ if  (isset($_GET['student_id'])) {
 $stmt = $pdo->query($query);
 $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $pdo = null;
+$student_id = $_GET['student_id'] ?? null;
 ?>
 
 <!doctype html>
@@ -41,11 +42,16 @@ $pdo = null;
 <body>
 <?php require __DIR__ . '/include/navbar.php'; ?>
 <div class="container">
-    <select class="mt-2" name="student_id">
+
+    <select class="mt-2" name="student_id" id="studentSelect">
+        <option value="">Выберете студента</option>
         <?php foreach ($students as $student): ?>
-            <option value="<?php echo $student['id']; ?>"><?php echo $student['first_name'] . ' ' . $student['last_name']; ?></option>
+            <option value="<?php echo $student['id']; ?>" <?php if ($student_id === (string)$student['id']): ?>
+                selected <?php endif; ?> >
+                <?php echo $student['first_name'] . ' ' . $student['last_name']; ?></option>
         <?php endforeach; ?>
     </select>
+
 </div>
 <div class="container">
     <div class="row">
@@ -74,6 +80,20 @@ $pdo = null;
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
+<script>
+    const studentSelectElement = document.querySelector('#studentSelect');
+
+    studentSelectElement.addEventListener('change', () => {
+
+        const studentId = studentSelectElement.value
+
+        if (studentId === '') {
+            document.location = '/admin/teacher_tasks.php'
+        } else {
+            document.location = '/admin/teacher_tasks.php?student_id=' + studentId
+        }
+    })
+</script>
 </body>
 </html>
 
