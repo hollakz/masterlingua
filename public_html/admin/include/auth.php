@@ -25,12 +25,13 @@ try {
     $user = $statement->fetch(PDO::FETCH_ASSOC);
     $level = $user['level'];
 
+    // проверяем, соответствует ли пароль хешу из базы данных
+    if (!password_verify($password, $user['password'])) {
+        displayAuth();
+    }
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
     exit();
 }
 
-// если пользователь не найден в базе или найден, но пароль не совпадает, показываем окно аутентификации
-if (!$user || ($user['password'] !== $password)) {
-    displayAuth();
-}

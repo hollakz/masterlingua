@@ -2,10 +2,15 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
-$query = "SELECT * FROM users WHERE role = 'student'";
+
+$query = "SELECT tasks.id, tasks.title, tasks.description, users.first_name, users.last_name
+FROM tasks
+JOIN users ON tasks.teacher_id = users.id
+WHERE tasks.student_id = $user[id]";
 $stmt = $pdo->query($query);
-$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $pdo = null;
+
 ?>
 
 <!doctype html>
@@ -23,16 +28,17 @@ $pdo = null;
 <?php require __DIR__ . '/include/navbar.php'; ?>
 <div class="container">
 <div class="row">
-    <?php if(!empty($students)): ?>
-        <?php foreach ($students as $student): ?>
+    <?php if(!empty($tasks)): ?>
+        <?php foreach ($tasks as $task): ?>
             <div class="col-6 col-sm-3">
             <div class="card mt-2">
                 <img src="../uploads/students/student-stub.jpg" class="card-img-top" alt="Студент-заглушка">
 
                 <div class="card-body">
-                    <h5 class="card-title"><?php echo $student['first_name']; ?> <?php echo $student['last_name']; ?></h5>
-                    <p class="card-text"> <span class="badge bg-secondary"><?php echo $student['level']; ?></span> <?php echo (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;?> года </p>
-                    <a href="/admin/student.php?id=<?php echo $student['id']?>" class="btn btn-primary">Редактировать</a>
+                    <h5 class="card-title"> <span class="badge bg-secondary"><?php echo $task['title']; ?></h5>
+                    <p class="card-text">Учитель: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
+                    <a href="/admin/show_task.php?id=<?php echo $task['id']?>" class="btn btn-primary">Просмотр задания</a>
+
                 </div>
             </div>
         </div>
@@ -48,3 +54,4 @@ $pdo = null;
         crossorigin="anonymous"></script>
 </body>
 </html>
+
