@@ -3308,7 +3308,13 @@ button {
 
 /* Our corporate clients section */
 .corporate-clients {
-  padding: 130px 0px 80px 0px;
+  padding: 100px 0px 80px 0px;
+  position: relative;
+  overflow: hidden;
+}
+
+.price_policy {
+  padding: 100px 0px 0px 0px;
   position: relative;
   overflow: hidden;
 }
@@ -4341,6 +4347,24 @@ footer {
   background-color: #fff;
 }
 
+.price_policy__box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-preferred-size: 788px;
+  flex-basis: 788px;
+  padding: 30px;
+  padding-top: 90px;
+  background-color: #fff;
+  }
+
 .teacher-box__wrapper {
   margin-bottom: 30px;
   display: -webkit-box;
@@ -4444,6 +4468,7 @@ footer {
   line-height: 125%;
   color: var(--color-main-dark);
 }
+
 .teacher-box__text p {
   margin-bottom: 15px;
   line-height: 145%;
@@ -5860,7 +5885,7 @@ textarea {
         -ms-flex-direction: column;
             flex-direction: column;
   }
-  .teacher-box {
+  .teacher-box .price_policy__box {
     -ms-flex-preferred-size: auto;
         flex-basis: auto;
   }
