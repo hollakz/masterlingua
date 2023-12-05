@@ -41,9 +41,10 @@ $student_id = $_GET['student_id'] ?? null;
 </head>
 <body>
 <?php require __DIR__ . '/include/navbar.php'; ?>
-<div class="container">
-
-    <select class="mt-2" name="student_id" id="studentSelect">
+<div class="container overflow-hidden">
+    <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+        <div class="col-7">
+    <select class="form-select mt-2 mb-2 " name="student_id" id="studentSelect"">
         <option value="">Выберете студента</option>
         <?php foreach ($students as $student): ?>
             <option value="<?php echo $student['id']; ?>" <?php if ($student_id === (string)$student['id']): ?>
@@ -51,7 +52,8 @@ $student_id = $_GET['student_id'] ?? null;
                 <?php echo $student['first_name'] . ' ' . $student['last_name']; ?></option>
         <?php endforeach; ?>
     </select>
-
+        </div>
+    </div>
 </div>
 <div class="container">
     <div class="row">
