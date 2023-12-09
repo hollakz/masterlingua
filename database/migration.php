@@ -47,6 +47,14 @@ try {
     echo "Error: " . $e->getMessage();
 }
 
-
-
+//Создание таблице Answers
+$sqlCreateTable = "CREATE TABLE IF NOT EXISTS answers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    task_id INTEGER UNIQUE,
+    text TEXT,
+    created_at TEXT,
+    mark INTEGER,
+    marked_at TEXT
+)";
+$pdo->exec($sqlCreateTable);
 
