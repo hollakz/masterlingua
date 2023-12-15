@@ -67,8 +67,9 @@ $student_id = $_GET['student_id'] ?? null;
                             <h5 class="card-title"><span class="badge bg-secondary"><?php echo $task['title']; ?></h5>
                             <p class="card-text">
                                 Студент: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
-                            <a href="/admin/show_task.php?id=<?php echo $task['id'] ?>" class="btn btn-primary">Просмотр
+                            <a href="/admin/teacher_show_task.php?id=<?php echo $task['id'] ?>" class="btn btn-primary">Просмотр
                                 задания</a>
+                            <!-- TODO: добавить кнопку - ссылку на редактирование задания -->
                         </div>
                     </div>
                 </div>
