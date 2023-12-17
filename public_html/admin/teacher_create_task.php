@@ -2,8 +2,8 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
-$id = $_GET['id'] ?? null;
-if (!$id) {
+$studentId = $_GET['student_id'] ?? null;
+if (!$studentId) {
     exit('Ошибка: неверный идентификатор страницы.');
 }
 
@@ -15,7 +15,6 @@ $errorMessage = null;
 
 if (isset($_POST['title'], $_POST['description'])) {
     $formSubmit = true;
-    $studentId = $_GET['id'];
     $teacherId = $user['id'];
     $title = trim($_POST['title']);
     $description = trim($_POST['description']);
