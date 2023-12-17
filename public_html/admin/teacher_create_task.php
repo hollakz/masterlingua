@@ -22,8 +22,21 @@ if (isset($_POST['title'], $_POST['description'])) {
     if (empty($title) || empty($description)) {
         $errorMessage = 'Вы не заполнили форму';
     } else {
-        //TODO INSERT QUERY
-        header("Location: /admin/students.php") ;
+        try {
+            $createQuery = 'INSERT INTO tasks (title, description, teacher_id, student_id) VALUES (:title, :description, :teacherId, :studentId)';
+            $stmt = $pdo->prepare($createQuery);
+            $stmt->bindValue(':title', $title);
+            $stmt->bindValue(':description', $description);
+            $stmt->bindValue(':teacherId', $teacherId);
+            $stmt->bindValue(':studentId', $studentId);
+            $stmt->execute();
+            echo '<script>
+                alert("Задание назначено")
+                document.location = "/admin/students.php"
+            </script>';
+        } catch (Exception $e) {
+            $errorMessage = $e->getMessage();
+        }
     }
 }
 
@@ -70,7 +83,7 @@ if (isset($_POST['title'], $_POST['description'])) {
                             <td>
                                 <div class="form-floating">
                 <textarea class="form-control h-100" id="description"
-                           name="description"></textarea>
+                          name="description"></textarea>
                                     <label for="description">Впишите задание</label>
                                 </div>
                             </td>
