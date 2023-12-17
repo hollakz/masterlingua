@@ -33,6 +33,7 @@ $pdo = null;
                     <h5 class="card-title"><?php echo $student['first_name']; ?> <?php echo $student['last_name']; ?></h5>
                     <p class="card-text"> <span class="badge bg-secondary"><?php echo $student['level']; ?></span> <?php echo (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;?> года </p>
                     <a href="/admin/student.php?id=<?php echo $student['id']?>" class="btn btn-primary">Редактировать</a>
+                    <a href="/admin/teacher_create_task.php?id=<?php echo $student['id']?>" class="btn btn-primary mt-2">Назначить задание</a>
                 </div>
             </div>
         </div>
