@@ -38,6 +38,7 @@ if (isset($_POST['mark'])) {
         echo "Error: " . $e->getMessage();
     }
 }
+
 ?>
 
 <!doctype html>
@@ -116,6 +117,8 @@ if (isset($_POST['mark'])) {
                                 <?php endif; ?>
                             </table>
                         </div>
+                <?php else: ?>
+                    <div>Студен еще не ответил на задание.</div>
                     <?php endif; ?>
                 </div>
             </div>

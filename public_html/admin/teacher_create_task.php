@@ -93,55 +93,6 @@ if (isset($_POST['title'], $_POST['description'])) {
             </div>
         </div>
     </div>
-    <!--    <div class="container">-->
-    <!--        <div class="container-fluid">-->
-    <!--            <div class="row justify-content-center">-->
-    <!--                <div class="col-12 col-md-6">-->
-    <!--                    --><?php //if ($answer): ?>
-    <!--                        <div class="tasks pt-3">-->
-    <!--                            <h3 class="text-center">Ответ на задания</h3>-->
-    <!--                            <table class="table table-success table-striped table-bordered mt-4">-->
-    <!--                                <tr>-->
-    <!--                                    <th class="table-light">id</th>-->
-    <!--                                    <td>--><?php //echo $answer['id']; ?><!--</td>-->
-    <!--                                </tr>-->
-    <!--                                <tr>-->
-    <!--                                    <th class="table-light">text</th>-->
-    <!--                                    <td>--><?php //echo $answer['text']; ?><!--</td>-->
-    <!--                                </tr>-->
-    <!--                                <tr>-->
-    <!--                                    <th class="table-light">Дата</th>-->
-    <!--                                    <td>--><?php //echo $answer['created_at']; ?><!--</td>-->
-    <!--                                </tr>-->
-    <!--                                --><?php //if (isset($answer['mark'], $answer['marked_at'])): ?>
-    <!--                                    <tr>-->
-    <!--                                        <th class="table-light">Оценка</th>-->
-    <!--                                        <td>--><?php //echo $answer['mark']; ?><!--</td>-->
-    <!--                                    </tr>-->
-    <!--                                    <tr>-->
-    <!--                                        <th class="table-light">Дата оценки</th>-->
-    <!--                                        <td>--><?php //echo $answer['marked_at']; ?><!--</td>-->
-    <!--                                    </tr>-->
-    <!--                                --><?php //else: ?>
-    <!--                                    <tr>-->
-    <!--                                        <td colspan="2">-->
-    <!--                                            <form action="" method="post">-->
-    <!--                                                <input id="mark" name="mark" type="number" min="2" max="5">-->
-    <!--                                                <button type="submit">Оценить задание</button>-->
-    <!--                                            </form>-->
-    <!--                                        </td>-->
-    <!--                                    </tr>-->
-    <!---->
-    <!--                                --><?php //endif; ?>
-    <!--                            </table>-->
-    <!--                        </div>-->
-    <!--                    --><?php //endif; ?>
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
