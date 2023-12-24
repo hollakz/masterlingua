@@ -117,8 +117,6 @@ if (isset($_POST['mark'])) {
                                 <?php endif; ?>
                             </table>
                         </div>
-                <?php else: ?>
-                    <div>Студен еще не ответил на задание.</div>
                     <?php endif; ?>
                 </div>
             </div>

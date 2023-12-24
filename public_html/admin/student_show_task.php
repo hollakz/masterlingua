@@ -28,7 +28,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['answerText'])) {
         $stmt->bindValue(':taskId', $id);
         $stmt->bindValue(':createdAt', (new \DateTime())->format('Y-m-d H:i:s'));
         $stmt->execute();
-        header("Location: /admin/student_student_show_task.php?id={$id}") ;
+        header("Location: /admin/student_show_task.php?id={$id}") ;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }

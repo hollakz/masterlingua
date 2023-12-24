@@ -2,14 +2,16 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
-$query = "SELECT tasks.id, tasks.title, tasks.description, users.first_name, users.last_name
-FROM tasks
-JOIN users ON tasks.student_id = users.id
-WHERE tasks.teacher_id = $user[id]";
-
+$query = "SELECT t.id, t.title, t.description, u.first_name, u.last_name, a.task_id
+FROM tasks t
+JOIN users u ON t.student_id = u.id
+LEFT JOIN answers a on t.id = a.task_id
+WHERE t.teacher_id = $user[id]";
+//TODO LEFT JOIN answers сделать по аналогии со студентами, что бы было видно если есть ответ на задание или нет
 $stmt = $pdo->query($query);
 $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Запрос для фильтра по студентам.
 $query_students = "SELECT u.id, u.first_name, u.last_name 
 FROM users u 
 LEFT JOIN tasks t ON (t.student_id = u.id) 
@@ -26,6 +28,7 @@ $stmt = $pdo->query($query);
 $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $pdo = null;
 $student_id = $_GET['student_id'] ?? null;
+
 ?>
 
 <!doctype html>
@@ -62,13 +65,18 @@ $student_id = $_GET['student_id'] ?? null;
                 <div class="col-6 col-sm-3">
                     <div class="card mt-2">
                         <img src="../uploads/teachers/teacher-stub.jpeg" class="card-img-top" alt="Учитель-заглушка">
-
                         <div class="card-body">
                             <h5 class="card-title"><span class="badge bg-secondary"><?php echo $task['title']; ?></h5>
                             <p class="card-text">
                                 Студент: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
                             <a href="/admin/teacher_show_task.php?id=<?php echo $task['id'] ?>" class="btn btn-primary">Просмотр
                                 задания</a>
+                            <a href="/admin/teacher_edit_task.php?id=<?php echo $task['id'] ?>" class="btn btn-primary">Редактировать задание</a>
+                            <?php if ($task['task_id']): ?>
+                                <div>Студент ответил на задание.</div>
+                            <?php else: ?>
+                                <div>Студент не ответил на задание.</div>
+                            <?php endif; ?>
                             <!-- TODO: добавить кнопку - ссылку на редактирование задания -->
                         </div>
                     </div>
