@@ -7,7 +7,6 @@ FROM tasks t
 JOIN users u ON t.student_id = u.id
 LEFT JOIN answers a on t.id = a.task_id
 WHERE t.teacher_id = $user[id]";
-//TODO LEFT JOIN answers сделать по аналогии со студентами, что бы было видно если есть ответ на задание или нет
 $stmt = $pdo->query($query);
 $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -71,7 +70,7 @@ $student_id = $_GET['student_id'] ?? null;
                                 Студент: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
                             <a href="/admin/teacher_show_task.php?id=<?php echo $task['id'] ?>" class="btn btn-primary">Просмотр
                                 задания</a>
-                            <a href="/admin/teacher_edit_task.php?id=<?php echo $task['id'] ?>" class="btn btn-primary">Редактировать задание</a>
+                            <a href="/admin/teacher_edit_task.php?id=<?php echo $task['id'] ?>" class="btn btn-primary mt-2">Редактировать задание</a>
                             <?php if ($task['task_id']): ?>
                                 <div>Студент ответил на задание.</div>
                             <?php else: ?>

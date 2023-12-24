@@ -54,7 +54,8 @@ $sqlCreateTable = "CREATE TABLE IF NOT EXISTS answers (
     text TEXT,
     created_at TEXT,
     mark INTEGER,
-    marked_at TEXT
+    marked_at TEXT,
+    comment TEXT                               
 )";
 $pdo->exec($sqlCreateTable);
 

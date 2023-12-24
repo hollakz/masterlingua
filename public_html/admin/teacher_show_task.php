@@ -25,15 +25,17 @@ $answer = $stmt->fetch(PDO::FETCH_ASSOC);
 if (isset($_POST['mark'])) {
     $mark = $_POST['mark'];
     $markedAt = (new \DateTime())->format('Y-m-d H:i:s');
+    $comment = $_POST['comment'];
 
     try {
-        $sqlUpdate = 'UPDATE answers SET mark = :mark, marked_at = :markedAt WHERE task_id = :taskId';
+        $sqlUpdate = 'UPDATE answers SET mark = :mark, marked_at = :markedAt, comment = :comment WHERE task_id = :taskId';
         $stmt = $pdo->prepare($sqlUpdate);
         $stmt->bindValue(':mark', (int)$mark);
         $stmt->bindValue(':markedAt', $markedAt);
+        $stmt->bindValue(':comment', $comment);
         $stmt->bindValue(':taskId', (int)$id);
         $stmt->execute();
-        header("Location: /admin/teacher_show_task.php?id={$id}") ;
+        header("Location: /admin/teacher_show_task.php?id={$id}");
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -95,7 +97,7 @@ if (isset($_POST['mark'])) {
                                     <th class="table-light">Дата</th>
                                     <td><?php echo $answer['created_at']; ?></td>
                                 </tr>
-                                <?php if (isset($answer['mark'], $answer['marked_at'])): ?>
+                                <?php if (isset($answer['mark'], $answer['marked_at'], $answer['comment'])): ?>
                                     <tr>
                                         <th class="table-light">Оценка</th>
                                         <td><?php echo $answer['mark']; ?></td>
@@ -104,16 +106,24 @@ if (isset($_POST['mark'])) {
                                         <th class="table-light">Дата оценки</th>
                                         <td><?php echo $answer['marked_at']; ?></td>
                                     </tr>
+                                    <tr>
+                                        <th class="table-light">Комментарий к заданию</th>
+                                        <td><?php echo $answer['comment']; ?></td>
+                                    </tr>
                                 <?php else: ?>
                                     <tr>
                                         <td colspan="2">
                                             <form action="" method="post">
+                                                <div class="form-floating mb-2">
+                                                    <textarea class="form-control h-100" id="mark"
+                                                              name="comment"></textarea>
+                                                    <label for="comment">Впишите комментарий к заданию</label>
+                                                </div>
                                                 <input id="mark" name="mark" type="number" min="2" max="5">
                                                 <button type="submit">Оценить задание</button>
                                             </form>
                                         </td>
                                     </tr>
-
                                 <?php endif; ?>
                             </table>
                         </div>

@@ -38,7 +38,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 года </p>
                             <a href="/admin/student.php?id=<?php echo $student['id'] ?>" class="btn btn-primary">Редактировать</a>
                             <?php if ($student['task_assign']): ?>
-                                <div>Задание назначено</div>
+                                <button type="button" class="btn btn-outline-dark mt-2" disabled>Задание назначено</button>
                             <?php else: ?>
                                 <a href="/admin/teacher_create_task.php?student_id=<?php echo $student['id'] ?>"
                                    class="btn btn-success mt-2">Назначить задание</a>
