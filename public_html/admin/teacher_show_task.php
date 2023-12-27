@@ -14,7 +14,6 @@ if ($user['role'] !== 'teacher') {
 $query = "SELECT t.title, t.description
           FROM tasks t
           WHERE t.id = {$id}";
-
 $stmt = $pdo->query($query);
 $task = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -40,7 +39,6 @@ if (isset($_POST['mark'])) {
         echo "Error: " . $e->getMessage();
     }
 }
-
 ?>
 
 <!doctype html>
@@ -59,10 +57,8 @@ if (isset($_POST['mark'])) {
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
-
             <div class="tasks pt-3">
                 <h3 class="text-center">Просмотр задания</h3>
-
                 <table class="table table-bordered mt-4">
                     <tr>
                         <th class="table-light">Title</th>
@@ -73,7 +69,6 @@ if (isset($_POST['mark'])) {
                         <td><?php echo $task['description']; ?></td>
                     </tr>
                 </table>
-
             </div>
         </div>
     </div>
@@ -132,8 +127,6 @@ if (isset($_POST['mark'])) {
             </div>
         </div>
     </div>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
