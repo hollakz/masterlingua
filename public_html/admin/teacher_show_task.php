@@ -58,7 +58,7 @@ if (isset($_POST['mark'])) {
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
             <div class="tasks pt-3">
-                <h3 class="text-center">Просмотр задания</h3>
+                <h3 class="text-center">Homework</h3>
                 <table class="table table-bordered mt-4">
                     <tr>
                         <th class="table-light">Title</th>
@@ -78,27 +78,27 @@ if (isset($_POST['mark'])) {
                 <div class="col-12 col-md-6">
                     <?php if ($answer): ?>
                         <div class="tasks pt-3">
-                            <h3 class="text-center">Ответ на задания</h3>
+                            <h3 class="text-center">Answer to the task</h3>
                             <table class="table table-success table-striped table-bordered mt-4">
                                 <tr>
-                                    <th class="table-light">id</th>
+                                    <th class="table-light">Task number</th>
                                     <td><?php echo $answer['id']; ?></td>
                                 </tr>
                                 <tr>
-                                    <th class="table-light">text</th>
+                                    <th class="table-light">Text</th>
                                     <td><?php echo $answer['text']; ?></td>
                                 </tr>
                                 <tr>
-                                    <th class="table-light">Дата</th>
+                                    <th class="table-light">Date</th>
                                     <td><?php echo $answer['created_at']; ?></td>
                                 </tr>
                                 <?php if (isset($answer['mark'], $answer['marked_at'], $answer['comment'])): ?>
                                     <tr>
-                                        <th class="table-light">Оценка</th>
+                                        <th class="table-light">Grade</th>
                                         <td><?php echo $answer['mark']; ?></td>
                                     </tr>
                                     <tr>
-                                        <th class="table-light">Дата оценки</th>
+                                        <th class="table-light">Date of assessment</th>
                                         <td><?php echo $answer['marked_at']; ?></td>
                                     </tr>
                                     <tr>

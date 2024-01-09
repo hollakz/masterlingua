@@ -36,7 +36,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <p class="card-text"><span
                                         class="badge bg-secondary"><?php echo $student['level']; ?></span> <?php echo (new DateTime())->diff(new DateTime($student['date_of_birth']))->y; ?>
                                 года </p>
-                            <a href="/admin/student.php?id=<?php echo $student['id'] ?>" class="btn btn-primary">Редактировать</a>
+                            <a href="/admin/edit_student.php?id=<?php echo $student['id'] ?>" class="btn btn-primary">Редактировать</a>
                             <?php if ($student['task_assign']): ?>
                                 <button type="button" class="btn btn-outline-dark mt-2" disabled>Задание назначено</button>
                             <?php else: ?>

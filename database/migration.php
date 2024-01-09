@@ -22,14 +22,15 @@ try {
         role TEXT,
         first_name TEXT,
         last_name TEXT,
-        date_of_birth TEXT
+        date_of_birth TEXT,
+        paid_for_classes INTEGER                                 
     )";
     $pdo->exec($sqlCreateTable);
 
-    $sqlInsertData = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth) VALUES
-        ('admin', 'pasSworLd102', 'A1', 'admin', 'Alexey', 'Klimenkov', '28.05.1991'),
-        ('student1', 'qwe123', 'A1', 'student', 'Sergay', 'Petrov', '22.03.1994'),
-        ('teacher1', 'qwe123', 'C2', 'teacher', 'Pavel', 'Ivanov', '11.12.1990')";
+    $sqlInsertData = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth, paid_for_classes) VALUES
+        ('admin', 'pasSworLd102', 'A1', 'admin', 'Alexey', 'Klimenkov', '1991.05.28', 2),
+        ('student1', 'qwe123', 'A1', 'student', 'Sergay', 'Petrov', '1994.04.23', 2),
+        ('teacher1', 'qwe123', 'C2', 'teacher', 'Pavel', 'Ivanov', '1990.11.12', 2)";
     $pdo->exec($sqlInsertData);
 
     //Создание таблицы Tasks

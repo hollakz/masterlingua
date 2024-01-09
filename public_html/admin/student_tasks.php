@@ -37,7 +37,7 @@ $pdo = null;
                 <div class="card-body">
                     <h5 class="card-title"> <span class="badge bg-secondary"><?php echo $task['title']; ?></h5>
                     <p class="card-text">Учитель: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
-                    <a href="/admin/student_show_task.php?id=<?php echo $task['id']?>" class="btn btn-primary">Просмотр задания</a>
+                    <a href="/admin/student_show_task.php?id=<?php echo $task['id']?>" class="btn btn-primary">Homework</a>
 
                 </div>
             </div>

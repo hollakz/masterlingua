@@ -2,6 +2,8 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
+$id = $_GET['id'] ?? null;
+
 $query = "SELECT * FROM users WHERE id = $_GET[id]";
 $stmt = $pdo->query($query);
 $student = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -13,7 +15,9 @@ $editError = false;
 if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 
     $username = mb_substr($_POST['username'] ?? '', 0, 20);
-    $password = mb_substr($_POST['password'] ?? '', 0, 10);
+    $password = password_hash($_REQUEST['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+    $level = mb_substr($_POST['level'] ?? '', 0, 10);
+    $role = mb_substr($_POST['role'] ?? '', 0, 10);
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
@@ -22,15 +26,16 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 
         try {
 
-            $sqlInsert = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth) VALUES (:username, :password, :level, :role, :first_name, :last_name, :date_of_birth)";
+            $sqlInsert = "UPDATE users SET username = :username, password = :password, level = :level, role = :role, first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth WHERE id = :id";
             $stmt = $pdo->prepare($sqlInsert);
             $stmt->bindValue(':username', strtolower($username));
             $stmt->bindValue(':password', $password);
-            $stmt->bindValue(':level', 'A1');
-            $stmt->bindValue(':role', 'student');
+            $stmt->bindValue(':level', $level);
+            $stmt->bindValue(':role', $role);
             $stmt->bindValue(':first_name', $first_name);
             $stmt->bindValue(':last_name', $last_name);
             $stmt->bindValue(':date_of_birth', $date_of_birth);
+            $stmt->bindValue(':id', $id);
             $stmt->execute();
             $editMessage = 'Изменения прошли успешно!';
         } catch (PDOException $e) {
@@ -85,14 +90,29 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
         <label for="username" class="form-label">Username</label>
         <input type="text" class="form-control" name="username" id="username"
                aria-describedby="emailHelp" minlength="1" maxlength="20" required="required" value="<?php echo $student['username']; ?>">
-        <div id="emailHelp" class="form-text">Мы никогда не передадим ваш адрес электронной почты
-            кому-либо еще.
-        </div>
     </div>
     <div class="mb-3">
         <label for="password" class="form-label">Пароль</label>
         <input type="password" class="form-control" id="password" name="password" minlength="1"
                maxlength="10" required="required" value="<?php echo $student['password']; ?>">
+    </div>
+    <div class="mb-3">
+        <span>Текущий уровень: <?php echo $student['level']?></span>
+        <select class="form-select mt-2 mb-2 " name="level" id="level" required="required">
+            <option value="A1">A1</option>
+            <option value="A2">A2</option>
+            <option value="B1">B1</option>
+            <option value="B2">B2</option>
+            <option value="C1">C1</option>
+            <option value="C2">C2</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <span>Текущая роль: <?php echo $student['role']?></span>
+        <select class="form-select mt-2 mb-2 " name="role" id="role" required="required">
+        <option value="student">student</option>
+        <option value="teacher">teacher</option>
+        </select>
     </div>
     <div class="mb-3">
         <label for="first_name" class="form-label">First name</label>

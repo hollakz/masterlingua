@@ -76,7 +76,6 @@ $student_id = $_GET['student_id'] ?? null;
                             <?php else: ?>
                                 <div>Студент не ответил на задание.</div>
                             <?php endif; ?>
-                            <!-- TODO: добавить кнопку - ссылку на редактирование задания -->
                         </div>
                     </div>
                 </div>
