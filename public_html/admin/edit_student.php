@@ -21,12 +21,13 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
+    $paid_for_classes = mb_substr($_POST['paid_for_classes'] ?? '', 0, 20);
 
     if (!empty($username) && !empty($password) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth)) {
 
         try {
 
-            $sqlInsert = "UPDATE users SET username = :username, password = :password, level = :level, role = :role, first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth WHERE id = :id";
+            $sqlInsert = "UPDATE users SET username = :username, password = :password, level = :level, role = :role, first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, paid_for_classes = :paid_for_classes WHERE id = :id";
             $stmt = $pdo->prepare($sqlInsert);
             $stmt->bindValue(':username', strtolower($username));
             $stmt->bindValue(':password', $password);
@@ -35,6 +36,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
             $stmt->bindValue(':first_name', $first_name);
             $stmt->bindValue(':last_name', $last_name);
             $stmt->bindValue(':date_of_birth', $date_of_birth);
+            $stmt->bindValue(':paid_for_classes', $paid_for_classes);
             $stmt->bindValue(':id', $id);
             $stmt->execute();
             $editMessage = 'Изменения прошли успешно!';
@@ -114,6 +116,20 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
         <option value="teacher">teacher</option>
         </select>
     </div>
+    <div class="mb-3">
+        <span>Выберите оставшееся количество занятий</span>
+        <select class="form-select mt-2 mb-2 " name="paid_for_classes" id="paid_for_classes" required="required">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        </select>
+    </div>
+
     <div class="mb-3">
         <label for="first_name" class="form-label">First name</label>
         <input type="text" class="form-control" id="first_name" name="first_name" minlength="1"

@@ -2,7 +2,7 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
-$query = "SELECT u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, t.teacher_id, t.student_id AS task_assign 
+$query = "SELECT u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, u.paid_for_classes, t.teacher_id, t.student_id AS task_assign 
 FROM  users u 
 LEFT JOIN tasks t ON u.id = t.student_id
 WHERE role = 'student'";
@@ -34,11 +34,15 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $student['first_name'] . ' ' . $student['last_name']; ?></h5>
                             <p class="card-text"><span
-                                        class="badge bg-secondary"><?php echo $student['level']; ?></span> <?php echo (new DateTime())->diff(new DateTime($student['date_of_birth']))->y; ?>
-                                года </p>
+                                        class="badge bg-secondary"><?php echo $student['level']; ?></span> <?php
+                                $age = (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;
+                                echo $age . ' ' . (($age % 10 == 1 && $age % 100 != 11) ? 'год' : (($age % 10 >= 2 && $age % 10 <= 4 && ($age % 100 < 10 || $age % 100 >= 20)) ? 'года' : 'лет'));
+                                ?> </p>
+                            <p class="card-text">Осталось занятий: <?php echo $student['paid_for_classes'] ?></p>
                             <a href="/admin/edit_student.php?id=<?php echo $student['id'] ?>" class="btn btn-primary">Редактировать</a>
                             <?php if ($student['task_assign']): ?>
-                                <button type="button" class="btn btn-outline-dark mt-2" disabled>Задание назначено</button>
+                                <button type="button" class="btn btn-outline-dark mt-2" disabled>Задание назначено
+                                </button>
                             <?php else: ?>
                                 <a href="/admin/teacher_create_task.php?student_id=<?php echo $student['id'] ?>"
                                    class="btn btn-success mt-2">Назначить задание</a>
