@@ -38,7 +38,12 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 $age = (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;
                                 echo $age . ' ' . (($age % 10 == 1 && $age % 100 != 11) ? 'год' : (($age % 10 >= 2 && $age % 10 <= 4 && ($age % 100 < 10 || $age % 100 >= 20)) ? 'года' : 'лет'));
                                 ?> </p>
-                            <p class="card-text">Осталось занятий: <?php echo $student['paid_for_classes'] ?></p>
+                            <p class="card-text ">Осталось занятий: <span
+                                        class="badge <?php if ($student['paid_for_classes'] == 1) {
+                                            echo 'text-bg-danger';
+                                        } else {
+                                            echo 'text-bg-warning';
+                                        } ?>"</span><?php echo $student['paid_for_classes'] ?></p>
                             <a href="/admin/edit_student.php?id=<?php echo $student['id'] ?>" class="btn btn-primary">Редактировать</a>
                             <?php if ($student['task_assign']): ?>
                                 <button type="button" class="btn btn-outline-dark mt-2" disabled>Задание назначено
