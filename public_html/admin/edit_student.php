@@ -2,7 +2,15 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
+if (!in_array($user['role'], ['admin', 'teacher'])) {
+    exit('Ошибка: у вас нет доступа к этой странице.');
+}
+
 $id = $_GET['id'] ?? null;
+if (!$id) {
+    exit('Ошибка: неверный идентификатор страницы.');
+}
+
 
 $query = "SELECT * FROM users WHERE id = $_GET[id]";
 $stmt = $pdo->query($query);
@@ -15,7 +23,7 @@ $editError = false;
 if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 
     $username = mb_substr($_POST['username'] ?? '', 0, 20);
-    $password = password_hash($_REQUEST['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+    $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT, ['cost' => 12]) : null;
     $level = mb_substr($_POST['level'] ?? '', 0, 10);
     $role = mb_substr($_POST['role'] ?? '', 0, 10);
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
@@ -24,16 +32,23 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $paid_for_classes = mb_substr($_POST['paid_for_classes'] ?? '', 0, 20);
 
 
-    if (!empty($username) && !empty($password) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth)) {
+    if (
+        (($user['role'] === 'admin') && (!empty($username) && !empty($password) && !empty($level) && !empty($role) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
+        ||
+        (($user['role'] === 'teacher') && (!empty($username) && !empty($level) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
+    ) {
 
         try {
+            $sqlAdmin = ($user['role'] === 'admin') ? 'password = :password, role = :role,' : '';
 
-            $sqlInsert = "UPDATE users SET username = :username, password = :password, level = :level, role = :role, first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, paid_for_classes = :paid_for_classes WHERE id = :id";
+            $sqlInsert = "UPDATE users SET username = :username, level = :level, {$sqlAdmin} first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, paid_for_classes = :paid_for_classes WHERE id = :id";
             $stmt = $pdo->prepare($sqlInsert);
             $stmt->bindValue(':username', strtolower($username));
-            $stmt->bindValue(':password', $password);
             $stmt->bindValue(':level', $level);
-            $stmt->bindValue(':role', $role);
+            if ($user['role'] === 'admin') {
+                $stmt->bindValue(':password', $password);
+                $stmt->bindValue(':role', $role);
+            }
             $stmt->bindValue(':first_name', $first_name);
             $stmt->bindValue(':last_name', $last_name);
             $stmt->bindValue(':date_of_birth', $date_of_birth);
@@ -91,7 +106,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                                aria-describedby="emailHelp" minlength="1" maxlength="20" required="required"
                                value="<?php echo $student['username']; ?>">
                     </div>
-
+                    <?php if (in_array($user['role'], ['admin'])): ?>
                         <div class="mb-3">
                             <label for="password" class="form-label">Пароль</label>
                             <input type="password" class="form-control" id="password" name="password" minlength="1"
@@ -104,7 +119,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                             <option value="teacher">teacher</option>
                         </select>
                     </div>
-
+                    <?php endif; ?>
                     <div class="mb-3">
                         <span>Текущий уровень: <?php echo $student['level'] ?></span>
                         <select class="form-select mt-2 mb-2 " name="level" id="level" required="required">
