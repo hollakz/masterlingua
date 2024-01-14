@@ -2,7 +2,7 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
-$query = "SELECT t.id, t.title, t.description, u.first_name, u.last_name, a.task_id
+$query = "SELECT t.id, t.title, t.description, u.first_name, u.last_name, a.task_id AS has_answer
 FROM tasks t
 JOIN users u ON t.student_id = u.id
 LEFT JOIN answers a on t.id = a.task_id
@@ -70,8 +70,10 @@ $student_id = $_GET['student_id'] ?? null;
                                 Студент: <?php echo $task["first_name"] . " " . $task["last_name"]; ?></p>
                             <a href="/admin/teacher_show_task.php?id=<?php echo $task['id'] ?>" class="btn btn-primary">Просмотр
                                 задания</a>
+                            <?php if (!$task['has_answer']): ?>
                             <a href="/admin/teacher_edit_task.php?id=<?php echo $task['id'] ?>" class="btn btn-primary mt-2">Редактировать задание</a>
-                            <?php if ($task['task_id']): ?>
+                            <?php endif; ?>
+                            <?php if ($task['has_answer']): ?>
                                 <div>Студент ответил на задание.</div>
                             <?php else: ?>
                                 <div>Студент не ответил на задание.</div>
