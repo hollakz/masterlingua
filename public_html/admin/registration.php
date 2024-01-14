@@ -67,9 +67,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
             $registrationMessage = 'Вы не заполнили все поля!';
         }
     }
-
 }
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -83,7 +81,6 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     <title>Админка. Регистрация.</title>
 </head>
 <body>
-
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
@@ -99,7 +96,6 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                         <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
                                 aria-label="Close"></button>
                     </div>
-
                 <?php endif; ?>
 
                 <form action="" method="post">
@@ -137,11 +133,11 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                     <button type="submit" onc class="btn btn-primary" name="register">Зарегистрироваться</button>
                     <a class="btn btn-light inline-block" href="/admin/registration.php" role="button">Сброс</a>
                 </form>
-
             </div>
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>

@@ -18,13 +18,24 @@ require __DIR__ . '/include/auth.php';
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
-
             <div class="registration pt-3">
-                <h3 class="text-center">Главная страница админки</h3>
-                <div class="lead text-center">
-                    Добро пожаловать, <strong><?php echo $username ?></strong>, ваш уровень: <span
-                            class="badge bg-secondary"><?php echo $level ?></span>
-                </div>
+
+                <?php if ($user['role'] !== 'student'): ?>
+                    <h3 class="text-center">Личный кабинет учителя</h3>
+                    <div class="lead text-center">
+                        Добро пожаловать, <strong><?php echo $user['first_name'] . ' ' . $user['last_name'] ?>.
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($user['role'] !== 'teacher'): ?>
+                    <h3 class="text-center">Личный кабинет студента</h3>
+                    <div class="lead text-center">
+                        Добро пожаловать, <strong><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></strong>,
+                        ваш уровень: <span
+                                class="badge bg-secondary"><?php echo $level ?></span>
+                    </div>
+                <?php endif; ?>
+
             </div>
         </div>
     </div>

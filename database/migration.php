@@ -28,9 +28,9 @@ try {
     $pdo->exec($sqlCreateTable);
 
     $sqlInsertData = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth, paid_for_classes) VALUES
-        ('admin', 'pasSworLd102', 'A1', 'admin', 'Alexey', 'Klimenkov', '1991.05.28', 2),
-        ('student1', 'qwe123', 'A1', 'student', 'Sergay', 'Petrov', '1994.04.23', 2),
-        ('teacher1', 'qwe123', 'C2', 'teacher', 'Pavel', 'Ivanov', '1990.11.12', 2)";
+        ('Olga', 'qwe123', 'A1', 'admin', 'Olga', 'O’Connor', '1999-05-05', null),
+        ('Holla', 'qwe123', 'A1', 'teacher', 'Alexey', 'Klimenkov', '1991-05-28', null),
+        ('Pavel', 'qwe123', 'C2', 'student', 'Pavel', 'Ivanov', '1990-11-12', null)";
     $pdo->exec($sqlInsertData);
 
     //Создание таблицы Tasks

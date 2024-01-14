@@ -28,7 +28,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['answerText'])) {
         $stmt->bindValue(':taskId', $id);
         $stmt->bindValue(':createdAt', (new \DateTime())->format('Y-m-d H:i:s'));
         $stmt->execute();
-        header("Location: /admin/student_show_task.php?id={$id}") ;
+        header("Location: /admin/student_show_task.php?id={$id}");
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -82,11 +82,11 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['answerText'])) {
                             <h3 class="text-center">Your answer</h3>
                             <table class="table table-success table-striped table-bordered mt-4">
                                 <?php if ($user['role'] !== 'student'): ?>
-                                <tr>
-                                    <th class="table-light">id</th>
-                                    <td><?php echo $answer['id']; ?></td>
-                                </tr>
-                                <?php endif;?>
+                                    <tr>
+                                        <th class="table-light">id</th>
+                                        <td><?php echo $answer['id']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
                                 <tr>
                                     <th class="table-light">Text</th>
                                     <td><?php echo $answer['text']; ?></td>
@@ -120,18 +120,17 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['answerText'])) {
                 </div>
             </div>
         </div>
-        <?php if(!$answer): ?>
-        <form action="" method="post">
-            <div class="form-floating">
+        <?php if (!$answer): ?>
+            <form action="" method="post">
+                <div class="form-floating">
                 <textarea class="form-control" id="answerText"
                           style="height: 100px" name="answerText"></textarea>
-                <label for="answerText">Впишите свой ответ</label>
-            </div>
-            <button type="submit" class="btn btn-primary mt-2">Отправить ответ</button>
-        </form>
+                    <label for="answerText">Впишите свой ответ</label>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">Отправить ответ</button>
+            </form>
         <?php endif; ?>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"

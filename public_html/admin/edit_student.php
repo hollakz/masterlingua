@@ -11,11 +11,9 @@ if (!$id) {
     exit('Ошибка: неверный идентификатор страницы.');
 }
 
-
 $query = "SELECT * FROM users WHERE id = $_GET[id]";
 $stmt = $pdo->query($query);
 $student = $stmt->fetch(PDO::FETCH_ASSOC);
-
 
 $editMessage = '';
 $editError = false;
@@ -30,7 +28,6 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
     $paid_for_classes = mb_substr($_POST['paid_for_classes'] ?? '', 0, 20);
-
 
     if (
         (($user['role'] === 'admin') && (!empty($username) && !empty($password) && !empty($level) && !empty($role) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
@@ -59,6 +56,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
         } catch (PDOException $e) {
 
             $editError = true;
+
             if (str_contains($e->getMessage(), 'UNIQUE')) {
                 $editMessage = 'Пользователь с таким username уже существует, придумайте другой username.';
             } else {
@@ -94,7 +92,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                     <div class="alert <?php if ($editError): ?>alert-danger<?php else: ?>alert-success<?php endif; ?>"
                          role="alert">
                         <?php echo $editMessage; ?>
-                        <?php if (!$editError): ?><a href="/admin">В админку</a><?php endif; ?>
+                        <?php if (!$editError): ?><a href="/admin/students.php">К списку студентов</a><?php endif; ?>
                         <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
                                 aria-label="Close"></button>
                     </div>
@@ -112,17 +110,19 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                             <input type="password" class="form-control" id="password" name="password" minlength="1"
                                    maxlength="10" value="<?php echo $student['password']; ?>">
                         </div>
-                    <div class="mb-3">
-                        <span>Текущая роль: <?php echo $student['role']?></span>
-                        <select class="form-select mt-2 mb-2 " name="role" id="role" required="required">
-                            <option value="student">student</option>
-                            <option value="teacher">teacher</option>
-                        </select>
-                    </div>
+                        <div class="mb-3">
+                            <span>Роли</span>
+                            <select class="form-select mt-2 mb-2 " name="role" id="role" required="required">
+                                <option value="role" selected>Текущая роль: <?php echo $student['role'] ?></option>
+                                <option value="student">student</option>
+                                <option value="teacher">teacher</option>
+                            </select>
+                        </div>
                     <?php endif; ?>
                     <div class="mb-3">
-                        <span>Текущий уровень: <?php echo $student['level'] ?></span>
+                        <span>Уровни студента</span>
                         <select class="form-select mt-2 mb-2 " name="level" id="level" required="required">
+                            <option value="level" selected>Текущий уровень: <?php echo $student['level'] ?></option>
                             <option value="A1">A1</option>
                             <option value="A2">A2</option>
                             <option value="B1">B1</option>
