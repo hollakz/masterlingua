@@ -2271,7 +2271,7 @@ button {
 }
 
 .tabs__item {
-  margin-left: 18px;
+  margin-left: 8px;
   padding: 0 0 10px 0;
 }
 
@@ -2293,7 +2293,7 @@ button {
 
 .rus-lang .tab-btn {
   font-size: 14px;
-  padding: 4px 10px 5px 10px;
+  padding: 4px 7px 5px 7px;
 }
 @media (max-width: 1000px) {
   .rus-lang .tab-btn {
@@ -2461,6 +2461,21 @@ button {
   background-image: url(../img/bg-rf.svg);
   background-repeat: no-repeat;
   background-size: 120%;
+  background-position: top center;
+  z-index: 0;
+  opacity: 0.17;
+}
+
+.bg-sp-fl::before {
+  content: "";
+  position: absolute;
+  top: -25px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(../img/bg-sp.svg);
+  background-repeat: no-repeat;
+  background-size: 70%;
   background-position: top center;
   z-index: 0;
   opacity: 0.17;

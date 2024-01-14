@@ -201,6 +201,10 @@ for (let teacherCard of teacherCards) {
     if (!teacherCard.getAttribute('data-languages').includes('russian')) {
       teacherCard.style.display = "none";
     }
+  } else if (teachersTable.classList.contains('sp')) {
+    if (!teacherCard.getAttribute('data-languages').includes('spanish')) {
+      teacherCard.style.display = "none";
+    }
   } else if (teachersTable.classList.contains('fr')) {
     if (!teacherCard.getAttribute('data-languages').includes('french')) {
       teacherCard.style.display = "none";
@@ -277,20 +281,6 @@ for (let languageTab of languageTabs) {
 
         }
       }
-    } else if (lang === 'spanish') {
-      for (let teacherCard of teacherCards) {
-        if (!teacherCard.getAttribute('data-languages').includes('spanish')) {
-          teacherCard.style.display = "none";
-          teachersTable.classList.add('bg-sp-fl');
-
-          if (body.classList.contains('rus-lang')) {
-            teachersTitle.innerText = "Наши преподаватели испанского языка";
-          } else {
-            teachersTitle.innerText = "Our spanish teachers";
-          };
-
-        }
-      }
     } else if (lang === 'italian') {
       for (let teacherCard of teacherCards) {
         if (!teacherCard.getAttribute('data-languages').includes('italian')) {
@@ -344,7 +334,19 @@ for (let languageTab of languageTabs) {
           } else {
             teachersTitle.innerText = "Our russian teachers";
           };
+        }
+      }
+    } else if (lang === 'spanish') {
+        for (let teacherCard of teacherCards) {
+            if (!teacherCard.getAttribute('data-languages').includes('spanish')) {
+                teacherCard.style.display = "none";
+                teachersTable.classList.add('bg-sp-fl');
 
+                if (body.classList.contains('rus-lang')) {
+                    teachersTitle.innerText = "Наши преподаватели испанского языка";
+                } else {
+                    teachersTitle.innerText = "Our spanish teachers";
+                };
         }
       }
     } else if (lang === 'french') {
@@ -452,6 +454,13 @@ for (const teacherCardImg of teacherCardsImg) {
       } else {
         videoHeader.innerText = "Teacher Tatiana Bazhanova";
       };
+    } else if (elemId === 'JuliaFomina') {
+        videoWrapper.insertAdjacentHTML('afterbegin', '<iframe src="https://www.youtube.com/embed/yRjSjR28zc8?modestbranding=1&controls=2&rel=0&playsinline=1" frameborder="0" allowfullscreen></iframe>');
+        if (body.classList.contains('rus-lang')) {
+            videoHeader.innerText = "Преподаватель Юлия Фомина";
+        } else {
+            videoHeader.innerText = "Teacher Julia Fomina";
+        };
     } else if (elemId === 'TatianaBiistrova') {
       videoWrapper.insertAdjacentHTML('afterbegin', '<iframe src="https://www.youtube.com/embed/oPTrOtHby_0?modestbranding=1&controls=2&rel=0&playsinline=1" frameborder="0" allowfullscreen></iframe>');
       if (body.classList.contains('rus-lang')) {

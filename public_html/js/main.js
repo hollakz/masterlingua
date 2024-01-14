@@ -132,6 +132,9 @@ const switchLink = function (langValue) {
     case 'russian':
       getStartedButton.href = "russian-teachers.html";
       break;
+    case 'spanish':
+      getStartedButton.href = "spanish-teachers.html";
+      break;
     case 'french':
       getStartedButton.href = "french-teachers.html";
       break;
@@ -416,6 +419,11 @@ for (const teacherCardImg of teacherCardsImg) {
         videoHeader.innerText = "Преподаватель Татьяна Бажанова";
       } else {
         videoHeader.innerText = "Teacher Tatiana Bazhanova";
+      };
+    } else if (elemId === 'JuliaFomina') {
+      videoWrapper.insertAdjacentHTML('afterbegin', '<iframe src="https://www.youtube.com/embed/yRjSjR28zc8?modestbranding=1&controls=2&rel=0&playsinline=1" frameborder="0" allowfullscreen></iframe>');
+      if (body.classList.contains('rus-lang')) {
+        videoHeader.innerText = "Преподаватель Юлия Фомина";
       };
     } else if (elemId === 'TatianaBiistrova') {
       videoWrapper.insertAdjacentHTML('afterbegin', '<iframe src="https://www.youtube.com/embed/oPTrOtHby_0?modestbranding=1&controls=2&rel=0&playsinline=1" frameborder="0" allowfullscreen></iframe>');
