@@ -20,7 +20,7 @@ $students = $stmt_students->fetchAll(PDO::FETCH_ASSOC);
 
 if (isset($_GET['student_id'])) {
     $student_id = $_GET['student_id'];
-    $query .= " AND tasks.student_id = {$student_id}";
+    $query .= " AND t.student_id = {$student_id}";
 }
 
 $stmt = $pdo->query($query);
