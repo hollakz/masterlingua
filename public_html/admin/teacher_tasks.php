@@ -57,29 +57,29 @@ $student_id = $_GET['student_id'] ?? null;
         </div>
     </div>
 </div>
-<div class="container">
-    <div class="row">
+<div class="container overflow-visible">
+    <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 align-items-stretch mx-auto">
         <?php if (!empty($tasks)): ?>
             <?php foreach ($tasks as $task): ?>
-                <div class="col-6 col-sm-3 col-sm-auto  d-flex flex-wrap align-items-stretch">
-                    <div class="card mt-2">
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="card mt-2 h-100">
                         <img src="../uploads/teachers/teacher-stub.jpeg" class="card-img-top" alt="Учитель-заглушка">
-                        <div class="card-body">
-                            <h5 class="card-title"><span class="badge bg-secondary"><?php echo $task['title']; ?></h5>
-                            <p class="card-text">
-                                Студент: <?php echo $task["first_name"] . ' ' . $task["last_name"]; ?></p>
-                            <a href="/admin/teacher_show_task.php?id=<?php echo $task['id'] ?>"
-                               class="btn btn-primary btn-xs">Просмотр
-                                задания</a>
-                            <?php if (!$task['has_answer']): ?>
-                                <a href="/admin/teacher_edit_task.php?id=<?php echo $task['id'] ?>"
-                                   class="btn btn-primary btn-xs mt-2">Редактировать задание</a>
-                            <?php endif; ?>
-                            <?php if ($task['has_answer']): ?>
-                                <div>Студент ответил на задание.</div>
-                            <?php else: ?>
-                                <div>Студент не ответил на задание.</div>
-                            <?php endif; ?>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Тема задания: <br> <?php echo $task['title']; ?></h5>
+                            <p class="card-text flex-fill d-flex flex-column">
+                                <span>Студент: <?php echo $task["first_name"] . ' ' . $task["last_name"]; ?></span>
+                                <a href="/admin/teacher_show_task.php?id=<?php echo $task['id'] ?>"
+                                   class="btn btn-primary btn-xs mt-2">Просмотр задания</a>
+                                <?php if (!$task['has_answer']): ?>
+                                    <a href="/admin/teacher_edit_task.php?id=<?php echo $task['id'] ?>"
+                                       class="btn btn-primary btn-xs mt-2">Редактировать задание</a>
+                                <?php endif; ?>
+                                <?php if ($task['has_answer']): ?>
+                                    <span>Студент ответил на задание.</span>
+                                <?php else: ?>
+                                    <span>Студент не ответил на задание.</span>
+                                <?php endif; ?>
+                            </p>
                         </div>
                     </div>
                 </div>

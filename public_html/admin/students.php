@@ -2,11 +2,12 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
-$query = "SELECT u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, u.paid_for_classes, COUNT(t.student_id)  AS task_count 
+$query = "SELECT u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, u.paid_for_classes, COUNT(t.student_id)  AS task_count, COUNT(a.mark) AS mark_count 
 FROM  users u 
 LEFT JOIN tasks t ON u.id = t.student_id
+LEFT JOIN answers a on t.id = a.task_id
 WHERE role = 'student'
-GROUP BY u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, u.paid_for_classes";
+GROUP BY u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, u.paid_for_classes, a.mark";
 $stmt = $pdo->query($query);
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -25,14 +26,14 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 <?php require __DIR__ . '/include/navbar.php'; ?>
-<div class="container">
-    <div class="row">
+<div class="container overflow-visible">
+    <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 align-items-stretch mx-auto">
         <?php if (!empty($students)): ?>
             <?php foreach ($students as $student): ?>
-                <div class="col-6 col-sm-3">
+                <div class="col-7">
                     <div class="card mt-2">
                         <img src="../uploads/students/student-stub.jpg" class="card-img-top" alt="Студент-заглушка">
-                        <div class="card-body">
+                        <div class="card-body flex-column">
                             <h5 class="card-title"><?php echo $student['first_name'] . ' ' . $student['last_name']; ?></h5>
                             <p class="card-text"><span
                                         class="badge bg-secondary"><?php echo $student['level']; ?></span> <?php
@@ -45,7 +46,8 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         } else {
                                             echo 'text-bg-warning';
                                         } ?>"</span><?php echo $student['paid_for_classes'] ?></p>
-                            <p class="card-text">Назначено заданий: <?php echo $student['task_count'] ?></p>
+                            <p class="card-text">Назначено
+                                заданий: <?php echo $student['task_count'] - $student['mark_count'] ?></p>
                             <a href="/admin/edit_student.php?id=<?php echo $student['id'] ?>" class="btn btn-primary">Редактировать</a>
                             <a href="/admin/teacher_create_task.php?student_id=<?php echo $student['id'] ?>"
                                class="btn btn-success mt-2">Назначить задание</a>
