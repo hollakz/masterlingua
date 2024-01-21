@@ -2,7 +2,7 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
-$query = "SELECT t.id, t.title, t.description, u.first_name, u.last_name, a.task_id AS has_answer
+$query = "SELECT t.id, t.title, t.description, u.first_name, u.last_name, u.avatar, a.task_id AS has_answer
 FROM tasks t
 JOIN users u ON t.student_id = u.id
 LEFT JOIN answers a on t.id = a.task_id
@@ -63,7 +63,7 @@ $student_id = $_GET['student_id'] ?? null;
             <?php foreach ($tasks as $task): ?>
                 <div class="col-sm-12 col-md-6 col-lg-4">
                     <div class="card mt-2 h-100">
-                        <img src="../uploads/teachers/teacher-stub.jpeg" class="card-img-top" alt="Учитель-заглушка">
+                        <img src="../avatar_images/<?php echo $user['avatar']; ?>" class="card-img-top" alt="Учитель-заглушка">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">Тема задания: <br> <?php echo $task['title']; ?></h5>
                             <p class="card-text flex-fill d-flex flex-column">

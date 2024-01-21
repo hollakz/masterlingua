@@ -12,6 +12,14 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
+    $avatar = null;
+    if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+        $avatar = $_FILES['avatar']['name'];
+        $destination = $_SERVER['DOCUMENT_ROOT'] . '/avatar_images/' . $avatar;
+        if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)) {
+            die("Failed to move uploaded file");
+        }
+    }
 
     try {
         $date_of_birth = (new DateTime($date_of_birth))->format('Y-m-d');
@@ -33,14 +41,14 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
         $registrationMessage = 'Дата рождения имеет некорректный формат';
         $registrationError = true;
     }
-
+    //TODO Добавить проверку заполнения полей
     if (!$registrationError) {
 
         if (!empty($username) && !empty($password) && !empty($first_name) && !empty($last_name)) {
 
             try {
 
-                $sqlInsert = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth) VALUES (:username, :password, :level, :role, :first_name, :last_name, :date_of_birth)";
+                $sqlInsert = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth, avatar) VALUES (:username, :password, :level, :role, :first_name, :last_name, :date_of_birth, :avatar)";
                 $stmt = $pdo->prepare($sqlInsert);
                 $stmt->bindValue(':username', strtolower($username));
                 $stmt->bindValue(':password', $password);
@@ -49,6 +57,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                 $stmt->bindValue(':first_name', $first_name);
                 $stmt->bindValue(':last_name', $last_name);
                 $stmt->bindValue(':date_of_birth', $date_of_birth);
+                $stmt->bindValue(':avatar', $avatar);
                 $stmt->execute();
                 $registrationMessage = 'Регистрация прошла успешно!';
                 $registrationError = false;
@@ -98,7 +107,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                     </div>
                 <?php endif; ?>
 
-                <form action="" method="post">
+                <form action="" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" name="username"
@@ -129,6 +138,10 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                         <label for="date_of_birth" class="form-label">Date of birth</label>
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" minlength="1"
                                maxlength="10" required="required" value="<?php echo $date_of_birth ?? ''; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="avatar" class="form-label">Avatar</label>
+                        <input type="file" class="form-control" id="avatar" name="avatar" required="required">
                     </div>
                     <button type="submit" onc class="btn btn-primary" name="register">Зарегистрироваться</button>
                     <a class="btn btn-light inline-block" href="/admin/registration.php" role="button">Сброс</a>
