@@ -16,6 +16,11 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
         $avatar = $_FILES['avatar']['name'];
         $destination = $_SERVER['DOCUMENT_ROOT'] . '/avatar_images/' . $avatar;
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+        $file_extension = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
+        if (!in_array($file_extension, $allowed_extensions)) {
+            die("Invalid file type. Only JPG, JPEG, PNG and GIF files are allowed.");
+        }
         if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)) {
             die("Failed to move uploaded file");
         }
@@ -92,9 +97,9 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 <body>
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
 
-            <div class="registration pt-3">
+            <div class="registration pt-5 mt-5">
                 <h3 class="text-center">Регистрация</h3>
 
                 <?php if (!empty($registrationMessage)): ?>
@@ -113,9 +118,6 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                         <input type="text" class="form-control" name="username"
                                value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>" id="username"
                                aria-describedby="emailHelp" minlength="1" maxlength="20" required="required">
-                        <div id="emailHelp" class="form-text">Мы никогда не передадим ваш адрес электронной почты
-                            кому-либо еще.
-                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Пароль</label>

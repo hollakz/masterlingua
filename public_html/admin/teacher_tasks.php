@@ -61,18 +61,18 @@ $student_id = $_GET['student_id'] ?? null;
     <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 align-items-stretch mx-auto">
         <?php if (!empty($tasks)): ?>
             <?php foreach ($tasks as $task): ?>
-                <div class="col-sm-12 col-md-6 col-lg-4">
-                    <div class="card mt-2 h-100">
+                <div class="col-7">
+                    <div class="card mt-2">
                         <img src="../avatar_images/<?php echo $user['avatar']; ?>" class="card-img-top" alt="Учитель-заглушка">
-                        <div class="card-body d-flex flex-column">
+                        <div class="card-body flex-column">
                             <h5 class="card-title">Тема задания: <br> <?php echo $task['title']; ?></h5>
-                            <p class="card-text flex-fill d-flex flex-column">
+                            <p class="card-text">
                                 <span>Студент: <?php echo $task["first_name"] . ' ' . $task["last_name"]; ?></span>
                                 <a href="/admin/teacher_show_task.php?id=<?php echo $task['id'] ?>"
                                    class="btn btn-primary btn-xs mt-2">Просмотр задания</a>
                                 <?php if (!$task['has_answer']): ?>
                                     <a href="/admin/teacher_edit_task.php?id=<?php echo $task['id'] ?>"
-                                       class="btn btn-primary btn-xs mt-2">Редактировать задание</a>
+                                       class="btn btn-success mt-2">Редактировать задание</a>
                                 <?php endif; ?>
                                 <?php if ($task['has_answer']): ?>
                                     <span>Студент ответил на задание.</span>

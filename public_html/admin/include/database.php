@@ -1,8 +1,6 @@
 <?php
-//$pdo = new PDO('sqlite:/home/c/cb37211/masterlingua/database/database.sqlite');
-//$pdo = new PDO('sqlite:/Users/pavelchervov/PhpstormProjects/masterlingua/database/database.sqlite');
-//$pdo = new PDO('sqlite:C:\Users\holla\PhpstormProjects\masterlingua\database\database.sqlite');
-//$pdo = new PDO('sqlite:C:\Users\Алёна\PhpstormProjects\masterlingua\database\database.sqlite');
+//$pdo = new PDO("mysql: host=localhost;dbname=cb37211_mlingua;charset=utf8", "cb37211_mlingua", "QVMqjYz9");
+//$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $pdo = new PDO("mysql: host=localhost;dbname=masterlingua;charset=utf8", "holla", "1337");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

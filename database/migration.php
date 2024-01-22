@@ -1,18 +1,37 @@
 <?php
 
+$host = "localhost";
+$username = "cb37211_mlingua";
+$password = "QVMqjYz9";
+$dbname = "cb37211_mlingua";
+
+$pdo = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//$pdo = new PDO("mysql: host=localhost;dbname=masterlingua;charset=utf8", "holla", "1337");
+//$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 $arg = $argv[1] ?? null;
 
 if ($arg === '--fresh') {
     try {
-        unlink('./database/database.sqlite');
+        $sql = "DROP DATABASE IF EXISTS cb37211_mlingua";
+        $pdo->exec($sql);
+        echo "Database cb37211_mlingua was successfully dropped.";
     } catch (Exception $e) {
         echo 'Error: ' . $e->getMessage();
     }
 }
 
 try {
-    $pdo = new PDO("mysql: host=localhost;dbname=masterlingua;charset=utf8", "holla", "1337");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $sqlCreateDb = "CREATE DATABASE IF NOT EXISTS cb37211_mlingua
+        DEFAULT CHARACTER SET utf8
+        DEFAULT COLLATE utf8_general_ci";
+
+    $sqlUse = "USE cb37211_mlingua";
+
+    $pdo->exec($sqlCreateDb);
+    $pdo->exec($sqlUse);
 
     $sqlCreateTable = "CREATE TABLE IF NOT EXISTS users
     (
@@ -28,12 +47,6 @@ try {
     avatar VARCHAR(255)
 )";
     $pdo->exec($sqlCreateTable);
-
-    $sqlInsertData = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth, paid_for_classes, avatar) VALUES
-         ('Olga', 'qwe123', 'A1', 'admin', 'Olga', 'O’Connor', '1999-05-05', null, null),
-         ('Holla', 'qwe123', 'A1', 'teacher', 'Alexey', 'Klimenkov', '1991-05-28', null, null),
-         ('Pavel', 'qwe123', 'C2', 'student', 'Pavel', 'Ivanov', '1990-11-12', null, null)";
-    $pdo->exec($sqlInsertData);
 
     //Создание таблицы Tasks
     $sqlCreateTable = "CREATE TABLE IF NOT EXISTS tasks (
