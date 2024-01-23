@@ -12,6 +12,19 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
+    $avatar = null;
+    if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+        $avatar = $_FILES['avatar']['name'];
+        $destination = $_SERVER['DOCUMENT_ROOT'] . '/avatar_images/' . $avatar;
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+        $file_extension = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
+        if (!in_array($file_extension, $allowed_extensions)) {
+            die("Invalid file type. Only JPG, JPEG, PNG and GIF files are allowed.");
+        }
+        if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)) {
+            die("Failed to move uploaded file");
+        }
+    }
 
     try {
         $date_of_birth = (new DateTime($date_of_birth))->format('Y-m-d');
@@ -33,14 +46,14 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
         $registrationMessage = 'Дата рождения имеет некорректный формат';
         $registrationError = true;
     }
-
+    //TODO Добавить проверку заполнения полей
     if (!$registrationError) {
 
         if (!empty($username) && !empty($password) && !empty($first_name) && !empty($last_name)) {
 
             try {
 
-                $sqlInsert = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth) VALUES (:username, :password, :level, :role, :first_name, :last_name, :date_of_birth)";
+                $sqlInsert = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth, avatar) VALUES (:username, :password, :level, :role, :first_name, :last_name, :date_of_birth, :avatar)";
                 $stmt = $pdo->prepare($sqlInsert);
                 $stmt->bindValue(':username', strtolower($username));
                 $stmt->bindValue(':password', $password);
@@ -49,6 +62,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                 $stmt->bindValue(':first_name', $first_name);
                 $stmt->bindValue(':last_name', $last_name);
                 $stmt->bindValue(':date_of_birth', $date_of_birth);
+                $stmt->bindValue(':avatar', $avatar);
                 $stmt->execute();
                 $registrationMessage = 'Регистрация прошла успешно!';
                 $registrationError = false;
@@ -67,9 +81,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
             $registrationMessage = 'Вы не заполнили все поля!';
         }
     }
-
 }
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -83,12 +95,11 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     <title>Админка. Регистрация.</title>
 </head>
 <body>
-
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
 
-            <div class="registration pt-3">
+            <div class="registration pt-5 mt-5">
                 <h3 class="text-center">Регистрация</h3>
 
                 <?php if (!empty($registrationMessage)): ?>
@@ -99,18 +110,14 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                         <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
                                 aria-label="Close"></button>
                     </div>
-
                 <?php endif; ?>
 
-                <form action="" method="post">
+                <form action="" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" name="username"
                                value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>" id="username"
                                aria-describedby="emailHelp" minlength="1" maxlength="20" required="required">
-                        <div id="emailHelp" class="form-text">Мы никогда не передадим ваш адрес электронной почты
-                            кому-либо еще.
-                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Пароль</label>
@@ -134,14 +141,18 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" minlength="1"
                                maxlength="10" required="required" value="<?php echo $date_of_birth ?? ''; ?>">
                     </div>
+                    <div class="mb-3">
+                        <label for="avatar" class="form-label">Avatar</label>
+                        <input type="file" class="form-control" id="avatar" name="avatar" required="required">
+                    </div>
                     <button type="submit" onc class="btn btn-primary" name="register">Зарегистрироваться</button>
                     <a class="btn btn-light inline-block" href="/admin/registration.php" role="button">Сброс</a>
                 </form>
-
             </div>
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>

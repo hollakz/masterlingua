@@ -28,7 +28,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['answerText'])) {
         $stmt->bindValue(':taskId', $id);
         $stmt->bindValue(':createdAt', (new \DateTime())->format('Y-m-d H:i:s'));
         $stmt->execute();
-        header("Location: /admin/student_show_task.php?id={$id}") ;
+        header("Location: /admin/student_show_task.php?id={$id}");
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -53,7 +53,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['answerText'])) {
         <div class="col-12 col-md-6">
 
             <div class="tasks pt-3">
-                <h3 class="text-center">Просмотр задания</h3>
+                <h3 class="text-center">Homework</h3>
 
                 <table class="table table-bordered mt-4">
                     <tr>
@@ -79,34 +79,36 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['answerText'])) {
                 <div class="col-12 col-md-6">
                     <?php if ($answer): ?>
                         <div class="tasks pt-3">
-                            <h3 class="text-center">Ответ на задания</h3>
+                            <h3 class="text-center">Your answer</h3>
                             <table class="table table-success table-striped table-bordered mt-4">
+                                <?php if ($user['role'] !== 'student'): ?>
+                                    <tr>
+                                        <th class="table-light">id</th>
+                                        <td><?php echo $answer['id']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
                                 <tr>
-                                    <th class="table-light">id</th>
-                                    <td><?php echo $answer['id']; ?></td>
-                                </tr>
-                                <tr>
-                                    <th class="table-light">text</th>
+                                    <th class="table-light">Text</th>
                                     <td><?php echo $answer['text']; ?></td>
                                 </tr>
                                 <tr>
-                                    <th class="table-light">Дата</th>
+                                    <th class="table-light">Data</th>
                                     <td><?php echo $answer['created_at']; ?></td>
                                 </tr>
 
                                 <?php if (isset($answer['mark'], $answer['marked_at'])): ?>
                                     <tr>
-                                        <th class="table-light">Оценка</th>
+                                        <th class="table-light">Grade</th>
                                         <td><?php echo $answer['mark']; ?></td>
                                     </tr>
                                     <tr>
-                                        <th class="table-light">Дата оценки</th>
+                                        <th class="table-light">Date of assessment</th>
                                         <td><?php echo $answer['marked_at']; ?></td>
                                     </tr>
                                 <?php else: ?>
 
                                     <tr>
-                                        <td>Оценка</td>
+                                        <td>Grade</td>
                                         <td>Вам еще не поставили оценку.</td>
                                     </tr>
                                 <?php endif; ?>
@@ -118,18 +120,17 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['answerText'])) {
                 </div>
             </div>
         </div>
-        <?php if(!$answer): ?>
-        <form action="" method="post">
-            <div class="form-floating">
+        <?php if (!$answer): ?>
+            <form action="" method="post">
+                <div class="form-floating">
                 <textarea class="form-control" id="answerText"
                           style="height: 100px" name="answerText"></textarea>
-                <label for="answerText">Впишите свой ответ</label>
-            </div>
-            <button type="submit" class="btn btn-primary mt-2">Отправить ответ</button>
-        </form>
+                    <label for="answerText">Впишите свой ответ</label>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">Отправить ответ</button>
+            </form>
         <?php endif; ?>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"

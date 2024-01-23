@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -18,13 +19,37 @@ require __DIR__ . '/include/auth.php';
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
-
             <div class="registration pt-3">
-                <h3 class="text-center">Главная страница админки</h3>
+
+                <?php if (in_array($user['role'], ['teacher'])): ?>
+                    <h3 class="text-center">Личный кабинет учителя</h3>
+                    <div class="lead text-center">
+                        Добро пожаловать, <strong><?php echo $user['first_name'] . ' ' . $user['last_name'] ?>.
+                    </div>
+                <?php endif; ?>
+
+                <?php if (in_array($user['role'], ['student'])): ?>
+                <h3 class="text-center">Личный кабинет студента</h3>
                 <div class="lead text-center">
-                    Добро пожаловать, <strong><?php echo $username ?></strong>, ваш уровень: <span
-                            class="badge bg-secondary"><?php echo $level ?></span>
+                    Добро пожаловать, <strong><?php echo $user['first_name'] . ' ' . $user['last_name'] ?>.</strong>
                 </div>
+                <br>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Количество оплаченных
+                            занятий:
+                        </th>
+                        <th scope="col">Ваш уровень:</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    <tr>
+                        <td><?php echo $user['paid_for_classes'] ?? 0; ?></td>
+                        <td><span class="badge bg-secondary"><?php echo $level ?></span></td>
+                    </tr>
+                    <?php endif; ?>
+
             </div>
         </div>
     </div>

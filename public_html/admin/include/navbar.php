@@ -6,10 +6,10 @@
             <a class="navbar-brand" href="/admin/students.php">Список студентов</a>
         <?php endif; ?>
         <?php if ($user['role'] !== 'student'): ?>
-            <a class="navbar-brand" href="/admin/teacher_tasks.php">Задания</a>
+            <a class="navbar-brand" href="/admin/teacher_tasks.php">Homework</a>
         <?php endif; ?>
         <?php if ($user['role'] !== 'teacher'): ?>
-            <a class="navbar-brand" href="/admin/student_tasks.php">Задания</a>
+            <a class="navbar-brand" href="/admin/student_tasks.php">Homework</a>
         <?php endif; ?>
     </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -25,10 +25,10 @@
                 <a class="navbar-brand" href="/admin/students.php">Список студентов</a>
             <?php endif; ?>
             <?php if ($user['role'] !== 'student'): ?>
-                <a class="navbar-brand" href="/admin/teacher_tasks.php">Задания</a>
+                <a class="navbar-brand" href="/admin/teacher_tasks.php">Homework</a>
             <?php endif; ?>
             <?php if ($user['role'] !== 'teacher'): ?>
-                <a class="navbar-brand" href="/admin/student_tasks.php">Задания</a>
+                <a class="navbar-brand" href="/admin/student_tasks.php">Homework</a>
             <?php endif; ?>
         </ul>
     </div>

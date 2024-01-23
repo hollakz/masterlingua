@@ -64,26 +64,25 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["editTask"])) {
             <div class="tasks pt-3">
                 <h3 class="text-center">Просмотр задания</h3>
                 <form action="" method="post">
-                <table class="table table-bordered mt-4">
-                    <tr>
-                        <th class="table-light"><label for="title" class="form-label">Title</label>
-                        </th>
-
-                        <td>
-
-                            <input type="text" class="form-control" id="title" name="title" minlength="1"
-                                   maxlength="10" required="required" value="<?php echo $task['title']; ?>">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-light"><label for="description" class="form-label">Description</label></th>
-                        <td>
-                            <textarea class="form-control" id="description" name="description" required="required" value="<?php echo $task['description']; ?>">
+                    <table class="table table-bordered mt-4">
+                        <tr>
+                            <th class="table-light"><label for="title" class="form-label">Title</label>
+                            </th>
+                            <td>
+                                <input type="text" class="form-control" id="title" name="title" minlength="1"
+                                       maxlength="10" required="required" value="<?php echo $task['title']; ?>">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="table-light"><label for="description" class="form-label">Description</label></th>
+                            <td>
+                            <textarea class="form-control" id="description" name="description" required="required"
+                                      value="<?php echo $task['description']; ?>">
                             </textarea>
-                        </td>
-                    </tr>
-                </table>
-                <button type="submit" class="btn btn-primary" name="editTask">Редактировать задание</button>
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="submit" class="btn btn-primary" name="editTask">Редактировать задание</button>
                 </form>
             </div>
         </div>
