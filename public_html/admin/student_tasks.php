@@ -63,7 +63,7 @@ $pdo = null;
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <div class="alert">Студенты не найдены</div>
+            <div class="alert">Задание не назначено.</div>
         <?php endif; ?>
     </div>
 </div>
