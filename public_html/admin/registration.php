@@ -100,13 +100,13 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
         <div class="col-12 col-md-4">
 
             <div class="registration pt-5 mt-5">
-                <h3 class="text-center">Регистрация</h3>
+                <h3 class="text-center">Registration</h3>
 
                 <?php if (!empty($registrationMessage)): ?>
                     <div class="alert <?php if ($registrationError): ?>alert-danger<?php else: ?>alert-success<?php endif; ?>"
                          role="alert">
                         <?php echo $registrationMessage; ?>
-                        <?php if (!$registrationError): ?><a href="/admin">В личный кабинет</a><?php endif; ?>
+                        <?php if (!$registrationError): ?><a href="login.php">Personal Area</a><?php endif; ?>
                         <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
                                 aria-label="Close"></button>
                     </div>
@@ -120,33 +120,33 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                                aria-describedby="emailHelp" minlength="1" maxlength="20" required="required">
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Пароль</label>
+                        <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" minlength="1"
-                               maxlength="10" required="required"
+                               maxlength="20" required="required"
                                value="<?php echo isset($_POST['password']) ? $_POST['password'] : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="first_name" class="form-label">First name</label>
                         <input type="text" class="form-control" id="first_name" name="first_name" minlength="1"
-                               maxlength="10" required="required"
+                               maxlength="20" required="required"
                                value="<?php echo isset($_POST['first_name']) ? $_POST['first_name'] : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="last_name" class="form-label">Last name</label>
                         <input type="text" class="form-control" id="last_name" name="last_name" minlength="1"
-                               maxlength="10" required="required" value="<?php echo $_POST['last_name'] ?? ''; ?>">
+                               maxlength="20" required="required" value="<?php echo $_POST['last_name'] ?? ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="date_of_birth" class="form-label">Date of birth</label>
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" minlength="1"
-                               maxlength="10" required="required" value="<?php echo $date_of_birth ?? ''; ?>">
+                               maxlength="20" required="required" value="<?php echo $date_of_birth ?? ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="avatar" class="form-label">Avatar</label>
                         <input type="file" class="form-control" id="avatar" name="avatar" required="required">
                     </div>
-                    <button type="submit" onc class="btn btn-primary" name="register">Зарегистрироваться</button>
-                    <a class="btn btn-light inline-block" href="/admin/registration.php" role="button">Сброс</a>
+                    <button type="submit" onc class="btn btn-primary" name="register">Registration</button>
+                    <a class="btn btn-light inline-block" href="/admin/registration.php" role="button">Reset</a>
                 </form>
             </div>
         </div>

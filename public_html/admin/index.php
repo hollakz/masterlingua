@@ -46,7 +46,7 @@ require __DIR__ . '/include/auth.php';
                     <tbody class="table-group-divider">
                     <tr>
                         <td><?php echo $user['paid_for_classes'] ?? 0; ?></td>
-                        <td><span class="badge bg-secondary"><?php echo $level ?></span></td>
+                        <td><span class="badge bg-secondary"><?php echo $user['level'] ?></span></td>
                     </tr>
                     <?php endif; ?>
 
