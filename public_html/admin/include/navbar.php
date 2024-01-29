@@ -3,6 +3,9 @@
         <a class="navbar-brand" href="/">Site</a>
         <a class="navbar-brand" href="/admin">Personal Area</a>
         <?php if ($user['role'] !== 'student'): ?>
+            <a class="navbar-brand" href="/admin/teachers.php">Teachers</a>
+        <?php endif; ?>
+        <?php if ($user['role'] !== 'student'): ?>
             <a class="navbar-brand" href="/admin/students.php">Students</a>
         <?php endif; ?>
         <?php if ($user['role'] !== 'student'): ?>
@@ -23,6 +26,9 @@
             <a class="navbar-brand" href="/">Site</a>
             <a class="navbar-brand" href="/admin">Personal Area</a>
             <?php if ($user['role'] !== 'student'): ?>
+                <a class="navbar-brand" href="/admin/teachers.php">Teachers</a>
+            <?php endif; ?>
+            <?php if ($user['role'] !== 'student'): ?>
                 <a class="navbar-brand" href="/admin/students.php">Students</a>
             <?php endif; ?>
             <?php if ($user['role'] !== 'student'): ?>
@@ -31,6 +37,7 @@
             <?php if ($user['role'] !== 'teacher'): ?>
                 <a class="navbar-brand" href="/admin/student_tasks.php">Homework</a>
             <?php endif; ?>
+            <a class="navbar-brand" href='./logout.php'>Logout</a>
         </ul>
     </div>
 </nav>
