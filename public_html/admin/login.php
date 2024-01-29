@@ -41,6 +41,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Авторизация</title>
     <!-- Подключаем стили Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -51,20 +52,20 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
 <!-- Форма для ввода логина и пароля -->
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-3 pt-5">
+        <div class="col-sm-8 col-md-6 col-lg-4 pt-5">
             <?php if ($hasError): ?>
                 <div class="alert alert-danger" role="alert">
                     <?php echo $errorText; ?>
                 </div>
             <?php endif; ?>
             <form class="form-signin" method="post">
-                <h2 class="form-signin-heading">Authorization</h2>
+                <h2 class="form-signin-heading text-center">Authorization</h2>
                 <label for="inputUsername" class="sr-only mb-2">Login</label>
                 <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Логин" required autofocus>
                 <label for="inputPassword" class="sr-only mt-2 mb-2">Password</label>
                 <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Пароль" required>
                 <button class="btn btn-primary btn-block mt-3" type="submit">Enter</button>
-                <a class="btn btn-light inline-block mt-3" href="./login.php" role="button">Reset</a>
+                <a class="btn btn-light inline-block mt-3 d-md-inline-block" href="./login.php" role="button">Reset</a>
             </form>
         </div>
     </div>
