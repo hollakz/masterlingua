@@ -32,7 +32,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($students as $student): ?>
                 <div class="col-7">
                     <div class="card mt-2">
-                        <img src="../avatar_images/<?php echo $student['avatar']; ?>" class="card-img-top img-fluid rounded" alt="Студент-заглушка">
+                        <img src="../avatar_images/<?php echo $student['avatar']; ?>" class="card-img-top img-fluid rounded" alt="Студент">
                         <div class="card-body flex-column">
                             <h5 class="card-title"><?php echo $student['first_name'] . ' ' . $student['last_name']; ?></h5>
                             <p class="card-text"><span
