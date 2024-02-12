@@ -75,3 +75,27 @@ $sqlCreateTable = "CREATE TABLE IF NOT EXISTS answers (
 )";
 $pdo->exec($sqlCreateTable);
 
+
+// Создание таблицы Languages
+$sqlCreateTable = "CREATE table if not exists languages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
+                                     )";
+$pdo->exec($sqlCreateTable);
+
+// Создание таблицы Levels
+$sqlCreateTable = "CREATE table if not exists levels (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+   description VARCHAR(255)
+                                     )";
+$pdo->exec($sqlCreateTable);
+
+// Создание таблицы User_lang
+$sqlCreateTable = "CREATE table if not exists user_lang (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+                                    user_id int,
+                                    lang_id int,
+                                    level_id int
+)";
+$pdo->exec($sqlCreateTable);
