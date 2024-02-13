@@ -6,13 +6,12 @@ require __DIR__ . '/include/auth.php';
 $usersLangsQuery = "SELECT ul.user_id, ln.name AS lang_name, lv.name AS level_name, lv.description AS level_description
 FROM user_lang ul
 JOIN languages ln ON ln.id = ul.lang_id
-JOIN levels lv on lv.id = ul.level_id";
-$userLangRows = $pdo->query($usersLangsQuery)->fetchAll(PDO::FETCH_ASSOC);
-
-$userLangMap = [];
-foreach ($userLangRows as $userLangRow) {
-    $userLangMap[$userLangRow['user_id']][] = $userLangRow;
-}
+JOIN levels lv on lv.id = ul.level_id
+WHERE ul.user_id = :userId";
+$userLangRowStmt = $pdo->prepare($usersLangsQuery);
+$userLangRowStmt->bindValue('userId', $user['id']);
+$userLangRowStmt->execute();
+$userLangs = $userLangRowStmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <!doctype html>
@@ -42,39 +41,38 @@ foreach ($userLangRows as $userLangRow) {
 
                 <?php if (in_array($user['role'], ['student'])): ?>
 
-                <h3 class="text-center">Личный кабинет студента</h3>
-                <div class="lead text-center">
-                    Добро пожаловать, <strong><?php echo $user['first_name'] . ' ' . $user['last_name'] ?>.</strong>
-                </div>
-                <br>
-                <?php if (isset($userLangMap[$user['id']])): ?>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Количество оплаченных
-                            занятий:
-                        </th>
-                        <th scope="col">Ваш уровень:</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                    <?php foreach ($userLangMap[$user['id']] as $userLang): ?>
+                    <h3 class="text-center">Личный кабинет студента</h3>
+                    <div class="lead text-center">
+                        Добро пожаловать, <strong><?php echo $user['first_name'] . ' ' . $user['last_name'] ?>.</strong>
+                    </div>
+                    <br>
+                    <table class="table">
+                        <tbody class="table-group-divider">
                         <tr>
+                            <th scope="col">Количество оплаченных
+                                занятий:
+                            </th>
                             <td><?php echo $user['paid_for_classes'] ?? 0; ?></td>
-                            <td><span class="badge bg-secondary"><?php echo $userLang['lang_name']; ?>, Уровень: <?php echo $userLang['level_name']; ?></span></td>
                         </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        <tr>
+                            <th>Уровни языка:</th>
+                            <td>
+                                <?php foreach ($userLangs as $userLang): ?>
+                                    <?php echo $userLang['lang_name']; ?>: <strong><?php echo $userLang['level_name']; ?></strong>
+                                    , //TODO Проверить index элемента , если он последний то не выводить
+                                <?php endforeach; ?>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 <?php endif; ?>
-                <?php endif; ?>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
 
 </body>
 </html>
