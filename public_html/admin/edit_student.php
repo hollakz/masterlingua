@@ -64,6 +64,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
             $stmt->bindValue('userId', $_GET['id']);
             $stmt->bindValue('langId', $langId);
             $stmt->bindValue('levelId', $levelId);
+            $stmt->execute();
             $editMessage = 'Изменения прошли успешно!';
         } catch (PDOException $e) {
 
@@ -131,22 +132,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                             </select>
                         </div>
                     <?php endif; ?>
-                    <div class="mb-3">
-                        <span>Level</span>
-                        <select class="form-select mt-2 mb-2 " name="level_id" id="levelId" required="required">
-                            <?php foreach ($levels as $level): ?>
-                            <option value="<?php echo $level['id']; ?>" selected><?php echo $level['name'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <span>Language</span>
-                        <select class="form-select mt-2 mb-2 " name="lang_id" id="langId" required="required">
-                            <?php foreach ($languages as $language): ?>
-                            <option value="<?php echo $language['id']?>" selected><?php echo $language['name'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+
                     <div class="mb-3">
                         <span>Выберите оставшееся количество занятий</span>
                         <select class="form-select mt-2 mb-2 " name="paid_for_classes" id="paid_for_classes"
@@ -175,6 +161,23 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                         <label for="date_of_birth" class="form-label">Date of birth</label>
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" minlength="1"
                                maxlength="10" required="required" value="<?php echo $student['date_of_birth']; ?>">
+                    </div>
+                    <h4>Добавить уровень</h4>
+                    <div class="mb-3">
+                        <span>Language</span>
+                        <select class="form-select mt-2 mb-2 " name="lang_id" id="langId" required="required">
+                            <?php foreach ($languages as $language): ?>
+                                <option value="<?php echo $language['id']?>" selected><?php echo $language['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <span>Level</span>
+                        <select class="form-select mt-2 mb-2 " name="level_id" id="levelId" required="required">
+                            <?php foreach ($levels as $level): ?>
+                                <option value="<?php echo $level['id']; ?>" selected><?php echo $level['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary" name="register">Изменить</button>
                     <a class="btn btn-light inline-block" href="/admin/students.php" role="button">Сброс</a>
