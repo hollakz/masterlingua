@@ -5,40 +5,42 @@ $username = "cb37211_mlingua";
 $password = "QVMqjYz9";
 $dbname = "cb37211_mlingua";
 
+
 $pdo = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-//$pdo = new PDO("mysql: host=localhost;dbname=masterlingua;charset=utf8", "holla", "1337");
-//$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$arg = $argv[1] ?? null;
+$isFresh = $argv[1] ?? null;
 
-if ($arg === '--fresh') {
+if ($isFresh === '--fresh') {
     try {
-        $sql = "DROP DATABASE IF EXISTS cb37211_mlingua";
+        $sql = "DROP DATABASE IF EXISTS {$dbname}";
         $pdo->exec($sql);
-        echo "Database cb37211_mlingua was successfully dropped.";
+        echo "Database {$dbname} was successfully dropped.";
     } catch (Exception $e) {
         echo 'Error: ' . $e->getMessage();
     }
 }
 
+
 try {
 
-    $sqlCreateDb = "CREATE DATABASE IF NOT EXISTS cb37211_mlingua
+    $sqlCreateDb = "CREATE DATABASE IF NOT EXISTS {$dbname}
         DEFAULT CHARACTER SET utf8
         DEFAULT COLLATE utf8_general_ci";
 
-    $sqlUse = "USE cb37211_mlingua";
+    $sqlUse = "USE {$dbname}";
 
     $pdo->exec($sqlCreateDb);
     $pdo->exec($sqlUse);
 
+    //Создание таблицы users
     $sqlCreateTable = "CREATE TABLE IF NOT EXISTS users
     (
-        id               INT AUTO_INCREMENT PRIMARY KEY,
+    id               INT AUTO_INCREMENT PRIMARY KEY,
     username         VARCHAR(255) UNIQUE,
     password         VARCHAR(255),
     level            VARCHAR(255),
+    second_level     VARCHAR(255),
     role             VARCHAR(255),
     first_name       VARCHAR(255),
     last_name        VARCHAR(255),
@@ -47,6 +49,18 @@ try {
     avatar VARCHAR(255)
 )";
     $pdo->exec($sqlCreateTable);
+
+    $isSystemUsers = $argv[1] ?? null;
+
+    if ($isSystemUsers === '--system-users') {
+        // Создание системных пользователей
+        $sqlInertTable = "INSERT INTO users(username, password, level, second_level, role, first_name, last_name, date_of_birth, paid_for_classes, avatar) VALUES
+            ('admin', '$2y$12$e664oLfeTinxGcgPQEsKuu6v88/HO6EOB.4PJYamlTgZFtQLo9UYS', 'A1','A1', 'admin', 'Admin', 'Admin', '1970-01-01', 0, 'service_avatar.png'),
+            ('teacher', '$2y$12$r5XNyK1LT7E3keBiHzuihu1jQ2oClkMp5yXfUS/4BfJzaQiUSbexO', 'A1','A1', 'teacher', 'Teacher', 'Teacher', '1970-01-01', 0, 'service_avatar.png'),
+            ('student', '$2y$12$x7pwYTg.h/2UMKXm4rfq5uJpbAoyMe9mCYW1QSXD2ZmfD5HrvBJHi', 'A1','A1', 'student', 'Student', 'Student', '1970-01-01', 0, 'service_avatar.png')";
+        $pdo->exec($sqlInertTable);
+    }
+
 
     //Создание таблицы Tasks
     $sqlCreateTable = "CREATE TABLE IF NOT EXISTS tasks (
