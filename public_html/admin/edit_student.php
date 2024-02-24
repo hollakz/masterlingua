@@ -15,6 +15,12 @@ $query = "SELECT * FROM users WHERE id = $_GET[id]";
 $stmt = $pdo->query($query);
 $student = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Вывод языков для студентов.
+$languages = $pdo->query('SELECT * FROM languages')->fetchAll(PDO::FETCH_ASSOC);
+
+// Вывод уровней для студентов.
+$levels = $pdo->query('SELECT * FROM levels')->fetchAll(PDO::FETCH_ASSOC);
+
 $editMessage = '';
 $editError = false;
 
@@ -22,8 +28,8 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 
     $username = mb_substr($_POST['username'] ?? '', 0, 20);
     $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT, ['cost' => 12]) : null;
-    $level = mb_substr($_POST['level'] ?? '', 0, 10);
-    $second_level = mb_substr($_POST['second_level'] ?? '', 0, 10);
+    $levelId = mb_substr($_POST['level_id'] ?? '', 0, 10);
+    $langId = mb_substr($_POST['lang_id'] ?? '', 0, 10);
     $role = mb_substr($_POST['role'] ?? '', 0, 10);
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
@@ -31,19 +37,17 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $paid_for_classes = mb_substr($_POST['paid_for_classes'] ?? '', 0, 20);
 
     if (
-        (($user['role'] === 'admin') && (!empty($username) && !empty($password) && !empty($level) && !empty($second_level) && !empty($role) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
+        (($user['role'] === 'admin') && (!empty($username) && !empty($password) && !empty($levelId) && !empty($langId) && !empty($role) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
         ||
-        (($user['role'] === 'teacher') && (!empty($username) && !empty($level) && !empty($second_level) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
+        (($user['role'] === 'teacher') && (!empty($username) && !empty($levelId) && !empty($langId) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
     ) {
 
         try {
             $sqlAdmin = ($user['role'] === 'admin') ? 'password = :password, role = :role,' : '';
 
-            $sqlInsert = "UPDATE users SET username = :username, level = :level, second_level = :second_level, {$sqlAdmin} first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, paid_for_classes = :paid_for_classes WHERE id = :id";
+            $sqlInsert = "UPDATE users SET username = :username, {$sqlAdmin} first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, paid_for_classes = :paid_for_classes WHERE id = :id";
             $stmt = $pdo->prepare($sqlInsert);
             $stmt->bindValue(':username', strtolower($username));
-            $stmt->bindValue(':level', $level);
-            $stmt->bindValue(':second_level', $second_level);
             if ($user['role'] === 'admin') {
                 $stmt->bindValue(':password', $password);
                 $stmt->bindValue(':role', $role);
@@ -54,6 +58,12 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
             $stmt->bindValue(':paid_for_classes', $paid_for_classes);
             $stmt->bindValue(':id', $id);
             $stmt->execute();
+
+            // Сохраняем уровни
+            $stmt= $pdo->prepare('INSERT INTO user_lang (user_id, lang_id, level_id) VALUES (:userId , :langId, :levelId)');
+            $stmt->bindValue('userId', $_GET['id']);
+            $stmt->bindValue('langId', $langId);
+            $stmt->bindValue('levelId', $levelId);
             $editMessage = 'Изменения прошли успешно!';
         } catch (PDOException $e) {
 
@@ -122,27 +132,19 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                         </div>
                     <?php endif; ?>
                     <div class="mb-3">
-                        <span>Уровни языка студента : №1</span>
-                        <select class="form-select mt-2 mb-2 " name="level" id="level" required="required">
-                            <option value="level" selected>Текущий уровень: <?php echo $student['level'] ?></option>
-                            <option value="A1">A1</option>
-                            <option value="A2">A2</option>
-                            <option value="B1">B1</option>
-                            <option value="B2">B2</option>
-                            <option value="C1">C1</option>
-                            <option value="C2">C2</option>
+                        <span>Level</span>
+                        <select class="form-select mt-2 mb-2 " name="level_id" id="levelId" required="required">
+                            <?php foreach ($levels as $level): ?>
+                            <option value="<?php echo $level['id']; ?>" selected><?php echo $level['name'] ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <span>Уровни языка студента : №2</span>
-                        <select class="form-select mt-2 mb-2 " name="second_level" id="second_level" required="required">
-                            <option value="second_level" selected>Текущий уровень: <?php echo $student['second_level'] ?></option>
-                            <option value="A1">A1</option>
-                            <option value="A2">A2</option>
-                            <option value="B1">B1</option>
-                            <option value="B2">B2</option>
-                            <option value="C1">C1</option>
-                            <option value="C2">C2</option>
+                        <span>Language</span>
+                        <select class="form-select mt-2 mb-2 " name="lang_id" id="langId" required="required">
+                            <?php foreach ($languages as $language): ?>
+                            <option value="<?php echo $language['id']?>" selected><?php echo $language['name'] ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="mb-3">
