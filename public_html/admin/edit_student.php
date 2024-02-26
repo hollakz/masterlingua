@@ -81,6 +81,16 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
         $editMessage = 'Вы не заполнили все поля!';
     }
 }
+
+$stmt = $pdo->prepare('SELECT ul.id, lng.name AS language_name, lvl.name AS level_name
+FROM user_lang ul
+JOIN languages lng ON ul.lang_id = lng.id
+JOIN levels lvl ON ul.level_id = lvl.id
+WHERE user_id = :id');
+$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+$stmt->execute();
+$lngLvls = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!doctype html>
@@ -92,6 +102,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <title>Изменение данных студента</title>
 </head>
 <body>
@@ -162,7 +173,18 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" minlength="1"
                                maxlength="10" required="required" value="<?php echo $student['date_of_birth']; ?>">
                     </div>
-                    <h4>Добавить уровень</h4>
+                    <h4>Уровни языка</h4>
+                    <div class="mb-3">
+                        <label class="mt-2 mb-2">
+                            <?php foreach ($lngLvls as $lngLvl): ?>
+                                <p>
+                                    <?php echo $lngLvl['language_name']. ' ' . $lngLvl['level_name']; ?>
+                                    <a href="./remove_user_lang.php?id=<?php echo $lngLvl['id']; ?>" class="btn btn-link"><i class="bi bi-x"></i></a>
+                                </p>
+                            <?php endforeach; ?>
+                        </label>
+                    </div>
+                    <h4>Добавить уровень языка</h4>
                     <div class="mb-3">
                         <span>Language</span>
                         <select class="form-select mt-2 mb-2 " name="lang_id" id="langId" required="required">
