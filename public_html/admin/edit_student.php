@@ -15,6 +15,12 @@ $query = "SELECT * FROM users WHERE id = $_GET[id]";
 $stmt = $pdo->query($query);
 $student = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Вывод языков для студентов.
+$languages = $pdo->query('SELECT * FROM languages')->fetchAll(PDO::FETCH_ASSOC);
+
+// Вывод уровней для студентов.
+$levels = $pdo->query('SELECT * FROM levels')->fetchAll(PDO::FETCH_ASSOC);
+
 $editMessage = '';
 $editError = false;
 
@@ -22,7 +28,8 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 
     $username = mb_substr($_POST['username'] ?? '', 0, 20);
     $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT, ['cost' => 12]) : null;
-    $level = mb_substr($_POST['level'] ?? '', 0, 10);
+    $levelId = mb_substr($_POST['level_id'] ?? '', 0, 10);
+    $langId = mb_substr($_POST['lang_id'] ?? '', 0, 10);
     $role = mb_substr($_POST['role'] ?? '', 0, 10);
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
@@ -30,18 +37,17 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $paid_for_classes = mb_substr($_POST['paid_for_classes'] ?? '', 0, 20);
 
     if (
-        (($user['role'] === 'admin') && (!empty($username) && !empty($password) && !empty($level) && !empty($role) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
+        (($user['role'] === 'admin') && (!empty($username) && !empty($password) && !empty($levelId) && !empty($langId) && !empty($role) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
         ||
-        (($user['role'] === 'teacher') && (!empty($username) && !empty($level) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
+        (($user['role'] === 'teacher') && (!empty($username) && !empty($levelId) && !empty($langId) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
     ) {
 
         try {
             $sqlAdmin = ($user['role'] === 'admin') ? 'password = :password, role = :role,' : '';
 
-            $sqlInsert = "UPDATE users SET username = :username, level = :level, {$sqlAdmin} first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, paid_for_classes = :paid_for_classes WHERE id = :id";
+            $sqlInsert = "UPDATE users SET username = :username, {$sqlAdmin} first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, paid_for_classes = :paid_for_classes WHERE id = :id";
             $stmt = $pdo->prepare($sqlInsert);
             $stmt->bindValue(':username', strtolower($username));
-            $stmt->bindValue(':level', $level);
             if ($user['role'] === 'admin') {
                 $stmt->bindValue(':password', $password);
                 $stmt->bindValue(':role', $role);
@@ -51,6 +57,13 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
             $stmt->bindValue(':date_of_birth', $date_of_birth);
             $stmt->bindValue(':paid_for_classes', $paid_for_classes);
             $stmt->bindValue(':id', $id);
+            $stmt->execute();
+
+            // Сохраняем уровни
+            $stmt= $pdo->prepare('INSERT INTO user_lang (user_id, lang_id, level_id) VALUES (:userId , :langId, :levelId)');
+            $stmt->bindValue('userId', $_GET['id']);
+            $stmt->bindValue('langId', $langId);
+            $stmt->bindValue('levelId', $levelId);
             $stmt->execute();
             $editMessage = 'Изменения прошли успешно!';
         } catch (PDOException $e) {
@@ -68,6 +81,16 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
         $editMessage = 'Вы не заполнили все поля!';
     }
 }
+
+$stmt = $pdo->prepare('SELECT ul.id, lng.name AS language_name, lvl.name AS level_name
+FROM user_lang ul
+JOIN languages lng ON ul.lang_id = lng.id
+JOIN levels lvl ON ul.level_id = lvl.id
+WHERE user_id = :id');
+$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+$stmt->execute();
+$lngLvls = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!doctype html>
@@ -79,6 +102,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <title>Изменение данных студента</title>
 </head>
 <body>
@@ -119,18 +143,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                             </select>
                         </div>
                     <?php endif; ?>
-                    <div class="mb-3">
-                        <span>Уровни студента</span>
-                        <select class="form-select mt-2 mb-2 " name="level" id="level" required="required">
-                            <option value="level" selected>Текущий уровень: <?php echo $student['level'] ?></option>
-                            <option value="A1">A1</option>
-                            <option value="A2">A2</option>
-                            <option value="B1">B1</option>
-                            <option value="B2">B2</option>
-                            <option value="C1">C1</option>
-                            <option value="C2">C2</option>
-                        </select>
-                    </div>
+
                     <div class="mb-3">
                         <span>Выберите оставшееся количество занятий</span>
                         <select class="form-select mt-2 mb-2 " name="paid_for_classes" id="paid_for_classes"
@@ -159,6 +172,34 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                         <label for="date_of_birth" class="form-label">Date of birth</label>
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" minlength="1"
                                maxlength="10" required="required" value="<?php echo $student['date_of_birth']; ?>">
+                    </div>
+                    <h4>Уровни языка</h4>
+                    <div class="mb-3">
+                        <label class="mt-2 mb-2">
+                            <?php foreach ($lngLvls as $lngLvl): ?>
+                                <p>
+                                    <?php echo $lngLvl['language_name']. ' ' . $lngLvl['level_name']; ?>
+                                    <a href="./remove_user_lang.php?id=<?php echo $lngLvl['id']; ?>" class="btn btn-link"><i class="bi bi-x"></i></a>
+                                </p>
+                            <?php endforeach; ?>
+                        </label>
+                    </div>
+                    <h4>Добавить уровень языка</h4>
+                    <div class="mb-3">
+                        <span>Language</span>
+                        <select class="form-select mt-2 mb-2 " name="lang_id" id="langId" required="required">
+                            <?php foreach ($languages as $language): ?>
+                                <option value="<?php echo $language['id']?>" selected><?php echo $language['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <span>Level</span>
+                        <select class="form-select mt-2 mb-2 " name="level_id" id="levelId" required="required">
+                            <?php foreach ($levels as $level): ?>
+                                <option value="<?php echo $level['id']; ?>" selected><?php echo $level['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary" name="register">Изменить</button>
                     <a class="btn btn-light inline-block" href="/admin/students.php" role="button">Сброс</a>

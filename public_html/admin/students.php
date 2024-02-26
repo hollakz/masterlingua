@@ -11,6 +11,18 @@ GROUP BY u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, 
 $stmt = $pdo->query($query);
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+$usersLangsQuery = "SELECT ul.user_id, ln.name AS lang_name, lv.name AS level_name, lv.description AS level_description
+FROM user_lang ul
+JOIN languages ln ON ln.id = ul.lang_id
+JOIN levels lv on lv.id = ul.level_id";
+$userLangRows = $pdo->query($usersLangsQuery)->fetchAll(PDO::FETCH_ASSOC);
+
+$studentLangGrouped = [];
+foreach ($userLangRows as $userLangRow) {
+    $studentLangGrouped[$userLangRow['user_id']][] = $userLangRow;
+}
+
 ?>
 
 <!doctype html>
@@ -32,14 +44,24 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($students as $student): ?>
                 <div class="col-7">
                     <div class="card mt-2">
-                        <img src="../avatar_images/<?php echo $student['avatar']; ?>" class="card-img-top img-fluid rounded" alt="Студент">
+                        <img src="../avatar_images/<?php echo $student['avatar']; ?>"
+                             class="card-img-top img-fluid rounded" alt="Студент">
                         <div class="card-body flex-column">
+
                             <h5 class="card-title"><?php echo $student['first_name'] . ' ' . $student['last_name']; ?></h5>
-                            <p class="card-text"><span
-                                        class="badge bg-secondary"><?php echo $student['level']; ?></span> <?php
-                                $age = (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;
-                                echo $age . ' ' . (($age % 10 == 1 && $age % 100 != 11) ? 'год' : (($age % 10 >= 2 && $age % 10 <= 4 && ($age % 100 < 10 || $age % 100 >= 20)) ? 'года' : 'лет'));
-                                ?> </p>
+                            <p class="card-text">
+
+                                <?php if (isset($studentLangGrouped[$student['id']])): ?>
+
+                                    <?php foreach ($studentLangGrouped[$student['id']] as $userLang): ?>
+
+                                        <p>Язык: <?php echo $userLang['lang_name']; ?>, Уровень: <?php echo $userLang['level_name']; ?> </p>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            <?php
+                            $age = (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;
+                            echo $age . ' ' . (($age % 10 == 1 && $age % 100 != 11) ? 'год' : (($age % 10 >= 2 && $age % 10 <= 4 && ($age % 100 < 10 || $age % 100 >= 20)) ? 'года' : 'лет'));
+                            ?> </p>
                             <p class="card-text ">Осталось занятий: <span
                                         class="badge <?php if ($student['paid_for_classes'] == 1) {
                                             echo 'text-bg-danger';
