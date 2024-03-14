@@ -23,7 +23,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
             $user = $statement->fetch(PDO::FETCH_ASSOC);
             if (!$user || !password_verify($password, $user['password'])) {
                 $hasError =true;
-                $errorText = "Пользователь с таким username не найден ли password введен не правильно. ";
+                $errorText = "Пользователь с таким username не найден или password введен не правильно. ";
             } else {
                 // авторизация прошла успешно
                 session_start();
