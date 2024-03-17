@@ -66,6 +66,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
                 <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Пароль" required>
                 <button class="btn btn-primary btn-block mt-3" type="submit">Enter</button>
                 <a class="btn btn-light inline-block mt-3 d-md-inline-block" href="./login.php" role="button">Reset</a>
+                <a class="btn btn-light inline-block mt-3 d-md-inline-block" href="./send_reset_password_link.php" role="button">Забыл пароль?</a>
             </form>
         </div>
     </div>
