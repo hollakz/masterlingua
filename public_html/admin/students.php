@@ -12,10 +12,11 @@ $stmt = $pdo->query($query);
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-$usersLangsQuery = "SELECT ul.user_id, ln.name AS lang_name, lv.name AS level_name, lv.description AS level_description
+$usersLangsQuery = "SELECT ul.user_id, ln.name AS lang_name, lv.name AS level_name, lv.description AS level_description, pfc.quantity AS quantity
 FROM user_lang ul
 JOIN languages ln ON ln.id = ul.lang_id
-JOIN levels lv on lv.id = ul.level_id";
+JOIN levels lv on lv.id = ul.level_id
+JOIN paid_for_classes pfc ON ul.quant_id = pfc.id";
 $userLangRows = $pdo->query($usersLangsQuery)->fetchAll(PDO::FETCH_ASSOC);
 
 $studentLangGrouped = [];
@@ -55,19 +56,18 @@ foreach ($userLangRows as $userLangRow) {
 
                                     <?php foreach ($studentLangGrouped[$student['id']] as $userLang): ?>
 
-                                        <p>Язык: <?php echo $userLang['lang_name']; ?>, Уровень: <?php echo $userLang['level_name']; ?> </p>
+                                <p>Язык: <?php echo $userLang['lang_name']; ?>, Уровень: <?php echo $userLang['level_name']; ?>, Осталось занятий: <span
+                                        class="badge <?php if ($userLang['quantity'] == 1) {
+                                            echo 'text-bg-danger';
+                                        } else {
+                                            echo 'text-bg-warning';
+                                        } ?>"</span><?php echo $userLang['quantity'] ?>  </p>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             <?php
                             $age = (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;
                             echo $age . ' ' . (($age % 10 == 1 && $age % 100 != 11) ? 'год' : (($age % 10 >= 2 && $age % 10 <= 4 && ($age % 100 < 10 || $age % 100 >= 20)) ? 'года' : 'лет'));
                             ?> </p>
-                            <p class="card-text ">Осталось занятий: <span
-                                        class="badge <?php if ($student['paid_for_classes'] == 1) {
-                                            echo 'text-bg-danger';
-                                        } else {
-                                            echo 'text-bg-warning';
-                                        } ?>"</span><?php echo $student['paid_for_classes'] ?></p>
                             <p class="card-text">Назначено
                                 заданий: <?php echo $student['task_count'] - $student['mark_count'] ?></p>
                             <a href="/admin/edit_student.php?id=<?php echo $student['id'] ?>" class="btn btn-primary">Редактировать</a>
