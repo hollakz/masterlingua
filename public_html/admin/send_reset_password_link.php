@@ -24,12 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $successMessage = "Ссылка для сброса пароля отправлена на ваш Email.";
             }
+            echo $link;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
     }
 }
-echo $link;
+
 ?>
 
 <!doctype html>

@@ -21,6 +21,10 @@ $languages = $pdo->query('SELECT * FROM languages')->fetchAll(PDO::FETCH_ASSOC);
 // Вывод уровней для студентов.
 $levels = $pdo->query('SELECT * FROM levels')->fetchAll(PDO::FETCH_ASSOC);
 
+//Вывод назначенных заданий.
+
+$paids = $pdo->query('SELECT * FROM paid_for_classes')->fetchAll(PDO::FETCH_ASSOC);
+
 $editMessage = '';
 $editError = false;
 
@@ -30,22 +34,23 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT, ['cost' => 12]) : null;
     $levelId = mb_substr($_POST['level_id'] ?? '', 0, 10);
     $langId = mb_substr($_POST['lang_id'] ?? '', 0, 10);
+    $quantId = mb_substr($_POST['quant_id'] ?? '', 0,10);
     $role = mb_substr($_POST['role'] ?? '', 0, 10);
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
-    $paid_for_classes = mb_substr($_POST['paid_for_classes'] ?? '', 0, 20);
+
 
     if (
-        (($user['role'] === 'admin') && (!empty($username) && !empty($password) && !empty($levelId) && !empty($langId) && !empty($role) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
+        (($user['role'] === 'admin') && (!empty($username) && !empty($password) && !empty($levelId) && !empty($langId) && !empty($role) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($quantId)))
         ||
-        (($user['role'] === 'teacher') && (!empty($username) && !empty($levelId) && !empty($langId) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
+        (($user['role'] === 'teacher') && (!empty($username) && !empty($levelId) && !empty($langId) && !empty($quantId) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth)))
     ) {
 
         try {
             $sqlAdmin = ($user['role'] === 'admin') ? 'password = :password, role = :role,' : '';
 
-            $sqlInsert = "UPDATE users SET username = :username, {$sqlAdmin} first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, paid_for_classes = :paid_for_classes WHERE id = :id";
+            $sqlInsert = "UPDATE users SET username = :username, {$sqlAdmin} first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth WHERE id = :id";
             $stmt = $pdo->prepare($sqlInsert);
             $stmt->bindValue(':username', strtolower($username));
             if ($user['role'] === 'admin') {
@@ -55,15 +60,15 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
             $stmt->bindValue(':first_name', $first_name);
             $stmt->bindValue(':last_name', $last_name);
             $stmt->bindValue(':date_of_birth', $date_of_birth);
-            $stmt->bindValue(':paid_for_classes', $paid_for_classes);
             $stmt->bindValue(':id', $id);
             $stmt->execute();
 
             // Сохраняем уровни
-            $stmt= $pdo->prepare('INSERT INTO user_lang (user_id, lang_id, level_id) VALUES (:userId , :langId, :levelId)');
+            $stmt= $pdo->prepare('INSERT INTO user_lang (user_id, lang_id, level_id, quant_id) VALUES (:userId , :langId, :levelId, :quant_id)');
             $stmt->bindValue('userId', $_GET['id']);
             $stmt->bindValue('langId', $langId);
             $stmt->bindValue('levelId', $levelId);
+            $stmt->bindValue('quant_id', $quantId);
             $stmt->execute();
             $editMessage = 'Изменения прошли успешно!';
         } catch (PDOException $e) {
@@ -82,10 +87,11 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     }
 }
 
-$stmt = $pdo->prepare('SELECT ul.id, lng.name AS language_name, lvl.name AS level_name
+$stmt = $pdo->prepare('SELECT ul.id, lng.name AS language_name, lvl.name AS level_name, pfc.quantity AS quantity 
 FROM user_lang ul
 JOIN languages lng ON ul.lang_id = lng.id
 JOIN levels lvl ON ul.level_id = lvl.id
+JOIN paid_for_classes pfc ON ul.quant_id = pfc.id
 WHERE user_id = :id');
 $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
@@ -145,20 +151,6 @@ $lngLvls = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php endif; ?>
 
                     <div class="mb-3">
-                        <span>Выберите оставшееся количество занятий</span>
-                        <select class="form-select mt-2 mb-2 " name="paid_for_classes" id="paid_for_classes"
-                                required="required">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
                         <label for="first_name" class="form-label">First name</label>
                         <input type="text" class="form-control" id="first_name" name="first_name" minlength="1"
                                maxlength="10" required="required" value="<?php echo $student['first_name']; ?>">
@@ -178,7 +170,7 @@ $lngLvls = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <label class="mt-2 mb-2">
                             <?php foreach ($lngLvls as $lngLvl): ?>
                                 <p>
-                                    <?php echo $lngLvl['language_name']. ' ' . $lngLvl['level_name']; ?>
+                                    <?php echo $lngLvl['language_name']. ' ' . $lngLvl['level_name']. ' ' . $lngLvl['quantity'] ?>
                                     <a href="./remove_user_lang.php?id=<?php echo $lngLvl['id']; ?>" class="btn btn-link"><i class="bi bi-x"></i></a>
                                 </p>
                             <?php endforeach; ?>
@@ -198,6 +190,14 @@ $lngLvls = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <select class="form-select mt-2 mb-2 " name="level_id" id="levelId" required="required">
                             <?php foreach ($levels as $level): ?>
                                 <option value="<?php echo $level['id']; ?>" selected><?php echo $level['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <span>Paid of classes</span>
+                        <select class="form-select mt-2 mb-2 " name="quant_id" id="quantId" required="required">
+                            <?php foreach ($paids as $paid): ?>
+                                <option value="<?php echo $paid['id']; ?>" selected><?php echo $paid['quantity'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
