@@ -214,6 +214,13 @@ for (const videoPopupButton of videoPopupButtons) {
       } else {
         videoHeader.innerText = "Teacher Julia Fomina";
       };
+    } else if (elemId === 'JP') {
+      videoWrapper.insertAdjacentHTML('afterbegin', '<iframe src="https://www.youtube.com/embed/Qb8kEK2ya10?modestbranding=1&controls=2&rel=0&playsinline=1" frameborder="0" allowfullscreen></iframe>');
+      if (body.classList.contains('rus-lang')) {
+        videoHeader.innerText = "Преподаватель Jan-Pieter van Wyngaardt (JP)";
+      } else {
+        videoHeader.innerText = "Teacher Jan-Pieter van Wyngaardt (JP)";
+      };
     } else if (elemId === 'TatianaBiistrova') {
       videoWrapper.insertAdjacentHTML('afterbegin', '<iframe src="https://www.youtube.com/embed/oPTrOtHby_0?modestbranding=1&controls=2&rel=0&playsinline=1" frameborder="0" allowfullscreen></iframe>');
       if (body.classList.contains('rus-lang')) {
