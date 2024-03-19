@@ -98,6 +98,7 @@ $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
 $lngLvls = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
 ?>
 
 <!doctype html>

@@ -24,6 +24,7 @@ foreach ($userLangRows as $userLangRow) {
     $studentLangGrouped[$userLangRow['user_id']][] = $userLangRow;
 }
 
+
 ?>
 
 <!doctype html>
