@@ -1,13 +1,17 @@
 <?php
 require __DIR__ . '/include/database.php';
+require __DIR__ . '/include/functions.php';
+
 $hasError = false;
 $errorText = '';
+
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['send_mail'] ?? null;
 
-    if (empty($email)) {
-        $errorText = "Вы не ввели ваш Email";
+    if (!$email || !checkEmail($email)) {
+        $errorText = "Вы ввели некорректный Email";
         $hasError = true;
     } else {
         try {
@@ -18,13 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $statement->fetch(PDO::FETCH_ASSOC);
 
             if ($user) {
-                $userId = $user['id'];
-                $link = 'http://localhost:8080/admin/reset_password.php?id=' . $userId;
-                $successMessage = "Ссылка для сброса пароля отправлена на ваш Email.";
-            } else {
-                $successMessage = "Ссылка для сброса пароля отправлена на ваш Email.";
+                $hash = simple_encrypt(['id' => $user['id']], '~$eCrE7');
+                echo $hash;
+                echo '<br>';
+                echo base64_decode($hash);
+                echo '<br>';
+                $link = 'https://masterlingua.pro/admin/reset_password.php?hash=' . $hash;
+
             }
+            //TODO Отправить EMAIL
+            $successMessage = "Ссылка для сброса пароля отправлена на ваш Email.";
             echo $link;
+
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
