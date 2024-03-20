@@ -2,12 +2,12 @@
 require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
-$query = "SELECT u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, u.paid_for_classes, u.avatar, COUNT(t.student_id)  AS task_count, COUNT(a.mark) AS mark_count 
+$query = "SELECT u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, u.avatar, COUNT(t.student_id)  AS task_count, COUNT(a.mark) AS mark_count 
 FROM  users u 
 LEFT JOIN tasks t ON u.id = t.student_id
 LEFT JOIN answers a on t.id = a.task_id
 WHERE role = 'student'
-GROUP BY u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, u.paid_for_classes, u.avatar, a.mark";
+GROUP BY u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, u.avatar, a.mark";
 $stmt = $pdo->query($query);
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
