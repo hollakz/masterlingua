@@ -144,28 +144,15 @@ $lngLvls = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="mb-3">
                             <span>Роли</span>
+                            <br>
+                            <span>Текущая роль: <?php echo $student['role'] ?></span>
                             <select class="form-select mt-2 mb-2 " name="role" id="role" required="required">
-                                <option value="role" selected>Текущая роль: <?php echo $student['role'] ?></option>
                                 <option value="student">student</option>
                                 <option value="teacher">teacher</option>
                             </select>
                         </div>
                     <?php endif; ?>
 
-                    <div class="mb-3">
-                        <span>Выберите оставшееся количество занятий</span>
-                        <select class="form-select mt-2 mb-2 " name="paid_for_classes" id="paid_for_classes"
-                                required="required">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                        </select>
-                    </div>
                     <div class="mb-3">
                         <label for="first_name" class="form-label">First name</label>
                         <input type="text" class="form-control" id="first_name" name="first_name" minlength="1"
