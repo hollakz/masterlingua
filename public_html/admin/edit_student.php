@@ -39,18 +39,18 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
-    $paid_for_classes = mb_substr($_POST['paid_for_classes'] ?? '', 0, 20);
+
 
     if (
-        (($user['role'] === 'admin') && (!empty($username) && !empty($password) && !empty($levelId) && !empty($langId) && !empty($role) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes) && !empty($quantId)))
+        (($user['role'] === 'admin') && (!empty($username) && !empty($password) && !empty($levelId) && !empty($langId) && !empty($role) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($quantId)))
         ||
-        (($user['role'] === 'teacher') && (!empty($username) && !empty($levelId) && !empty($langId) && !empty($quantId) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth) && !empty($paid_for_classes)))
+        (($user['role'] === 'teacher') && (!empty($username) && !empty($levelId) && !empty($langId) && !empty($quantId) && !empty($first_name) && !empty($last_name) && !empty($date_of_birth)))
     ) {
 
         try {
             $sqlAdmin = ($user['role'] === 'admin') ? 'password = :password, role = :role,' : '';
 
-            $sqlInsert = "UPDATE users SET username = :username, {$sqlAdmin} first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, paid_for_classes = :paid_for_classes WHERE id = :id";
+            $sqlInsert = "UPDATE users SET username = :username, {$sqlAdmin} first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth WHERE id = :id";
             $stmt = $pdo->prepare($sqlInsert);
             $stmt->bindValue(':username', strtolower($username));
             if ($user['role'] === 'admin') {
@@ -60,7 +60,6 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
             $stmt->bindValue(':first_name', $first_name);
             $stmt->bindValue(':last_name', $last_name);
             $stmt->bindValue(':date_of_birth', $date_of_birth);
-            $stmt->bindValue(':paid_for_classes', $paid_for_classes);
             $stmt->bindValue(':id', $id);
             $stmt->execute();
 
