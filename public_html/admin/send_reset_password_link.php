@@ -33,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if (mail($to, $subject, $message, $headers)) {
                     $successMessage = "Ссылка для сброса пароля отправлена на ваш Email.";
-                    var_dump($headers);
                 } else {
                     $errorText = "Ошибка при отправке письма. Пожалуйста, попробуйте позже.";
                 }
