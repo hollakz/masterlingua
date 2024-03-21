@@ -97,6 +97,7 @@ $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
 $lngLvls = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
 ?>
 
 <!doctype html>
@@ -142,8 +143,9 @@ $lngLvls = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="mb-3">
                             <span>Роли</span>
+                            <br>
+                            <span>Текущая роль: <?php echo $student['role'] ?></span>
                             <select class="form-select mt-2 mb-2 " name="role" id="role" required="required">
-                                <option value="role" selected>Текущая роль: <?php echo $student['role'] ?></option>
                                 <option value="student">student</option>
                                 <option value="teacher">teacher</option>
                             </select>
