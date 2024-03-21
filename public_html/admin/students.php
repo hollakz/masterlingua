@@ -55,8 +55,6 @@ foreach ($userLangRows as $userLangRow) {
 
                             <p>Язык: <?php echo $userLang['lang_name']; ?>,
                                 Уровень: <?php echo $userLang['level_name']; ?>, Осталось занятий: <span
-                                    <?php foreach ($studentLangGrouped[$student['id']] as $userLang): ?>
-                                <p>Язык: <?php echo $userLang['lang_name']; ?>, Уровень: <?php echo $userLang['level_name']; ?>, Осталось занятий: <span
                                         class="badge <?php if ($userLang['quantity'] == 1) {
                                             echo 'text-bg-danger';
                                         } else {
@@ -64,9 +62,6 @@ foreach ($userLangRows as $userLangRow) {
                                         } ?>"</span><?php echo $userLang['quantity'] ?>  </p>
                             <?php endforeach; ?>
                             <?php endif; ?>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-
                             <?php
                             $age = (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;
                             echo $age . ' ' . (($age % 10 == 1 && $age % 100 != 11) ? 'год' : (($age % 10 >= 2 && $age % 10 <= 4 && ($age % 100 < 10 || $age % 100 >= 20)) ? 'года' : 'лет'));
