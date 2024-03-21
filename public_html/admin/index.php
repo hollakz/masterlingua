@@ -3,10 +3,11 @@ require __DIR__ . '/include/database.php';
 require __DIR__ . '/include/auth.php';
 
 
-$usersLangsQuery = "SELECT ul.user_id, ln.name AS lang_name, lv.name AS level_name, lv.description AS level_description
+$usersLangsQuery = "SELECT ul.user_id, ln.name AS lang_name, lv.name AS level_name, pfc.quantity AS quantity
 FROM user_lang ul
 JOIN languages ln ON ln.id = ul.lang_id
 JOIN levels lv on lv.id = ul.level_id
+JOIN paid_for_classes pfc ON ul.quant_id = pfc.id
 WHERE ul.user_id = :userId";
 $userLangRowStmt = $pdo->prepare($usersLangsQuery);
 $userLangRowStmt->bindValue('userId', $user['id']);
@@ -52,14 +53,15 @@ $userLangs = $userLangRowStmt->fetchAll(PDO::FETCH_ASSOC);
                             <th scope="col">Количество оплаченных
                                 занятий:
                             </th>
-                            <td><?php echo $user['paid_for_classes'] ?? 0; ?></td>
+                            <?php foreach ($userLangs as $userLang): ?>
+                            <td><?php echo $userLang['quantity'] ?? 0; ?></td>
                         </tr>
                         <tr>
                             <th>Уровни языка:</th>
                             <td>
-                                <?php foreach ($userLangs as $userLang): ?>
+
                                     <?php echo $userLang['lang_name']; ?>: <strong><?php echo $userLang['level_name']; ?></strong>
-                                    , //TODO Проверить index элемента , если он последний то не выводить
+<!--                                    //TODO Проверить index элемента , если он последний то не выводить-->
                                 <?php endforeach; ?>
                             </td>
                         </tr>

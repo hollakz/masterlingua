@@ -11,7 +11,6 @@ GROUP BY u.id, u.username, u.first_name, u.last_name, u.level, u.date_of_birth, 
 $stmt = $pdo->query($query);
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
 $usersLangsQuery = "SELECT ul.user_id, ln.name AS lang_name, lv.name AS level_name, lv.description AS level_description, pfc.quantity AS quantity
 FROM user_lang ul
 JOIN languages ln ON ln.id = ul.lang_id
@@ -23,7 +22,6 @@ $studentLangGrouped = [];
 foreach ($userLangRows as $userLangRow) {
     $studentLangGrouped[$userLangRow['user_id']][] = $userLangRow;
 }
-
 
 ?>
 
@@ -49,22 +47,26 @@ foreach ($userLangRows as $userLangRow) {
                         <img src="../avatar_images/<?php echo $student['avatar']; ?>"
                              class="card-img-top img-fluid rounded" alt="Студент">
                         <div class="card-body flex-column">
-
                             <h5 class="card-title"><?php echo $student['first_name'] . ' ' . $student['last_name']; ?></h5>
                             <p class="card-text">
 
                                 <?php if (isset($studentLangGrouped[$student['id']])): ?>
+                                <?php foreach ($studentLangGrouped[$student['id']] as $userLang): ?>
 
+                            <p>Язык: <?php echo $userLang['lang_name']; ?>,
+                                Уровень: <?php echo $userLang['level_name']; ?>, Осталось занятий: <span
                                     <?php foreach ($studentLangGrouped[$student['id']] as $userLang): ?>
-
                                 <p>Язык: <?php echo $userLang['lang_name']; ?>, Уровень: <?php echo $userLang['level_name']; ?>, Осталось занятий: <span
                                         class="badge <?php if ($userLang['quantity'] == 1) {
                                             echo 'text-bg-danger';
                                         } else {
                                             echo 'text-bg-warning';
                                         } ?>"</span><?php echo $userLang['quantity'] ?>  </p>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
+
                             <?php
                             $age = (new DateTime())->diff(new DateTime($student['date_of_birth']))->y;
                             echo $age . ' ' . (($age % 10 == 1 && $age % 100 != 11) ? 'год' : (($age % 10 >= 2 && $age % 10 <= 4 && ($age % 100 < 10 || $age % 100 >= 20)) ? 'года' : 'лет'));

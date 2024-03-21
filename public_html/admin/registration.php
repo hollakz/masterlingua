@@ -2,13 +2,33 @@
 require __DIR__ . '/include/database.php';
 
 $registrationMessage = '';
+$emailError = '';
+$passError = '';
 $registrationError = false;
 
 if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
-
+    $email = mb_substr($_POST['email'] ?? '', 0, 40);
+    if (empty($email)) {
+        $emailError = "E-mail обязателен для заполнения.";
+        $registrationError = true;
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailError = "Некорректный формат e-mail.";
+        $registrationError = true;
+    }
     $username = mb_substr($_POST['username'] ?? '', 0, 20);
-    $password = mb_substr($_POST['password'] ?? '', 0, 10);
-    $password = password_hash($_REQUEST['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+    $password = $_POST['password'] ?? '';
+    $hashed_pass = '';
+    if (strlen($password) < 10) {
+
+        // Обработка ошибки - пароль менее 10 символов
+        $passError = "Пароль должен содержать не менее 10 символов.";
+        $registrationError = true;
+    } else {
+        $password = mb_substr($password, 0, 20);
+
+        // Хэшируем пароль
+        $hashed_pass = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+    }
     $first_name = mb_substr($_POST['first_name'] ?? '', 0, 20);
     $last_name = mb_substr($_POST['last_name'] ?? '', 0, 20);
     $date_of_birth = mb_substr($_POST['date_of_birth'] ?? '', 0, 20);
@@ -25,38 +45,36 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
             die("Failed to move uploaded file");
         }
     }
-
     try {
         $date_of_birth = (new DateTime($date_of_birth))->format('Y-m-d');
 
         //Проверка даты рождения
         $minDate = (new DateTime('-10 years'))->format('Y-m-d');
-
         if ($date_of_birth > $minDate) {
+
 // Ошибка, дата рождения меньше 10 лет назад
             $registrationMessage = 'Дата рождения должна быть не моложе 10 лет назад';
             $registrationError = true;
         } else {
+
 // Дата рождения прошла проверку, можно использовать ее
             $registrationMessage = '';
             $registrationError = false;
         }
-
     } catch (\Exception $e) {
         $registrationMessage = 'Дата рождения имеет некорректный формат';
         $registrationError = true;
     }
-    //TODO Добавить проверку заполнения полей
-    if (!$registrationError) {
 
-        if (!empty($username) && !empty($password) && !empty($first_name) && !empty($last_name)) {
+    if (!$registrationError) {
+        if (!empty($email) && !empty($username) && !empty($password) && !empty($first_name) && !empty($last_name) && !empty($hashed_pass)) {
 
             try {
-
-                $sqlInsert = "INSERT INTO users (username, password, level, role, first_name, last_name, date_of_birth, avatar) VALUES (:username, :password, :level, :role, :first_name, :last_name, :date_of_birth, :avatar)";
+                $sqlInsert = "INSERT INTO users (email, username, password, level, role, first_name, last_name, date_of_birth, avatar) VALUES (:email, :username, :password, :level, :role, :first_name, :last_name, :date_of_birth, :avatar)";
                 $stmt = $pdo->prepare($sqlInsert);
+                $stmt->bindValue(':email', ($email));
                 $stmt->bindValue(':username', strtolower($username));
-                $stmt->bindValue(':password', $password);
+                $stmt->bindValue(':password', $hashed_pass);
                 $stmt->bindValue(':level', 'A1');
                 $stmt->bindValue(':role', 'student');
                 $stmt->bindValue(':first_name', $first_name);
@@ -68,9 +86,9 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                 $registrationError = false;
 
             } catch (PDOException $e) {
-
+                echo 'Ошибка: ' . $e->getMessage();
                 $registrationError = true;
-                if (str_contains($e->getMessage(), 'UNIQUE')) {
+                if (str_contains($e->getMessage(), 'Duplicate')) {
                     $registrationMessage = 'Пользователь с таким username уже существует, придумайте другой username.';
                 } else {
                     $registrationMessage = 'Ошибка регистрации, обратитесь в службу поддержки!';
@@ -113,6 +131,21 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                 <?php endif; ?>
 
                 <form action="" method="post" enctype="multipart/form-data">
+
+                    <div class="mb-3">
+                        <?php if (!empty($emailError)): ?>
+                            <div class="alert <?php if ($registrationError): ?>alert-danger<?php else: ?>alert-success<?php endif; ?>"
+                                 role="alert">
+                                <?php echo $emailError; ?>
+                                <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        <?php endif; ?>
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" class="form-control" name="email"
+                               value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>" id="email"
+                               aria-describedby="emailHelp" minlength="1" maxlength="40" required="required">
+                    </div>
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" name="username"
@@ -120,6 +153,14 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                                aria-describedby="emailHelp" minlength="1" maxlength="20" required="required">
                     </div>
                     <div class="mb-3">
+                        <?php if (!empty($passError)): ?>
+                            <div class="alert <?php if ($registrationError): ?>alert-danger<?php else: ?>alert-success<?php endif; ?>"
+                                 role="alert">
+                                <?php echo $passError; ?>
+                                <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        <?php endif; ?>
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" minlength="1"
                                maxlength="20" required="required"
@@ -155,6 +196,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+</script>
 </body>
 </html>

@@ -23,7 +23,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
             $user = $statement->fetch(PDO::FETCH_ASSOC);
             if (!$user || !password_verify($password, $user['password'])) {
                 $hasError =true;
-                $errorText = "Пользователь с таким username не найден ли password введен не правильно. ";
+                $errorText = "Пользователь с таким username не найден или password введен не правильно. ";
             } else {
                 // авторизация прошла успешно
                 session_start();
@@ -66,6 +66,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
                 <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Пароль" required>
                 <button class="btn btn-primary btn-block mt-3" type="submit">Enter</button>
                 <a class="btn btn-light inline-block mt-3 d-md-inline-block" href="./login.php" role="button">Reset</a>
+                <a class="btn btn-light inline-block mt-3 d-md-inline-block" href="./send_reset_password_link.php" role="button">Забыл(а) пароль?</a>
             </form>
         </div>
     </div>
