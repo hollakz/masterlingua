@@ -19,11 +19,13 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     $password = $_POST['password'] ?? '';
     $hashed_pass = '';
     if (strlen($password) < 10) {
+
         // Обработка ошибки - пароль менее 10 символов
         $passError = "Пароль должен содержать не менее 10 символов.";
         $registrationError = true;
     } else {
         $password = mb_substr($password, 0, 20);
+
         // Хэшируем пароль
         $hashed_pass = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
     }
@@ -45,23 +47,25 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
     }
     try {
         $date_of_birth = (new DateTime($date_of_birth))->format('Y-m-d');
+
         //Проверка даты рождения
         $minDate = (new DateTime('-10 years'))->format('Y-m-d');
         if ($date_of_birth > $minDate) {
+
 // Ошибка, дата рождения меньше 10 лет назад
             $registrationMessage = 'Дата рождения должна быть не моложе 10 лет назад';
             $registrationError = true;
         } else {
+
 // Дата рождения прошла проверку, можно использовать ее
             $registrationMessage = '';
             $registrationError = false;
         }
-
     } catch (\Exception $e) {
         $registrationMessage = 'Дата рождения имеет некорректный формат';
         $registrationError = true;
     }
-    //TODO Добавить проверку заполнения полей
+
     if (!$registrationError) {
         if (!empty($email) && !empty($username) && !empty($password) && !empty($first_name) && !empty($last_name) && !empty($hashed_pass)) {
 
@@ -133,7 +137,8 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                             <div class="alert <?php if ($registrationError): ?>alert-danger<?php else: ?>alert-success<?php endif; ?>"
                                  role="alert">
                                 <?php echo $emailError; ?>
-                                <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                             </div>
                         <?php endif; ?>
                         <label for="email" class="form-label">E-mail</label>
@@ -152,7 +157,8 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
                             <div class="alert <?php if ($registrationError): ?>alert-danger<?php else: ?>alert-success<?php endif; ?>"
                                  role="alert">
                                 <?php echo $passError; ?>
-                                <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                             </div>
                         <?php endif; ?>
                         <label for="password" class="form-label">Password</label>
@@ -190,6 +196,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["register"])) {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+</script>
 </body>
 </html>

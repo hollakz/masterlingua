@@ -5,8 +5,6 @@ require __DIR__ . '/include/functions.php';
 $hasError = false;
 $errorText = '';
 
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['send_mail'] ?? null;
 
@@ -23,23 +21,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($user) {
                 $hash = simple_encrypt(['id' => $user['id']], '~$eCrE7');
-                echo $hash;
-                echo '<br>';
-                echo base64_decode($hash);
-                echo '<br>';
                 $link = 'https://masterlingua.pro/admin/reset_password.php?hash=' . $hash;
 
-            }
-            //TODO Отправить EMAIL
-            $successMessage = "Ссылка для сброса пароля отправлена на ваш Email.";
-            echo $link;
+                // Отправка письма с ссылкой на сброс пароля
+                $to = $email;
+                $subject = 'Сброс пароля';
+                $message = 'Для сброса пароля перейдите по ссылке: ' . $link;
+                $headers = 'From: info@masterlingua.pro ' . "\r\n" .
+                    'Reply-To: info@masterlingua.pro ' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
 
+                if (mail($to, $subject, $message, $headers)) {
+                    $successMessage = "Ссылка для сброса пароля отправлена на ваш Email.";
+                    var_dump($headers);
+                } else {
+                    $errorText = "Ошибка при отправке письма. Пожалуйста, попробуйте позже.";
+                }
+            }
+            $successMessage = "Ссылка для сброса пароля отправлена на ваш Email.";
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
     }
 }
-
 ?>
 
 <!doctype html>
@@ -60,9 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form class="form-signin" method="post">
                 <h2 class="form-signin-heading text-center">Восстановление доступа</h2>
                 <label for="inputMail" class="sr-only mb-2"></label>
-                <input type="text" id="inputMail" name="send_mail" class="form-control" placeholder="Email" required autofocus>
+                <input type="text" id="inputMail" name="send_mail" class="form-control" placeholder="Email" required
+                       autofocus>
                 <button class="btn btn-primary btn-block mt-3" type="submit">Enter</button>
-                <a class="btn btn-light inline-block mt-3 d-md-inline-block" href="./send_reset_password_link.php" role="button">Reset</a>
+                <a class="btn btn-light inline-block mt-3 d-md-inline-block" href="./send_reset_password_link.php"
+                   role="button">Reset</a>
             </form>
             <?php if ($hasError): ?>
                 <div class="alert alert-danger mt-3" role="alert"><?php echo $errorText; ?></div>
