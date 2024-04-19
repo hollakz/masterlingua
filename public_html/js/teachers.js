@@ -217,6 +217,13 @@ for (const videoPopupButton of videoPopupButtons) {
       } else {
         videoHeader.innerText = "Teacher Julia Fomina";
       };
+    } else if (elemId === 'VictoriaKovalenko') {
+      videoWrapper.insertAdjacentHTML('afterbegin', '<iframe src="https://www.youtube.com/embed/kOJg6FQqeL8?modestbranding=1&controls=2&rel=0&playsinline=1" frameborder="0" allowfullscreen></iframe>');
+      if (body.classList.contains('rus-lang')) {
+        videoHeader.innerText = "Преподаватель Виктория Коваленко";
+      } else {
+        videoHeader.innerText = "Teacher Victoria Kovalenko";
+      };
     } else if (elemId === 'JP') {
       videoWrapper.insertAdjacentHTML('afterbegin', '<iframe src="https://www.youtube.com/embed/Qb8kEK2ya10?modestbranding=1&controls=2&rel=0&playsinline=1" frameborder="0" allowfullscreen></iframe>');
       if (body.classList.contains('rus-lang')) {
@@ -265,6 +272,13 @@ for (const videoPopupButton of videoPopupButtons) {
         videoHeader.innerText = "Преподаватель Екатерина Надольская";
       } else {
         videoHeader.innerText = "Teacher Nadolskaya Ekaterina";
+      };
+    } else if (elemId === 'AnastasiaMironiuk') {
+      videoWrapper.insertAdjacentHTML('afterbegin', '<iframe src="https://www.youtube.com/embed/Au0CGQAZWrA?modestbranding=1&controls=2&rel=0&playsinline=1" frameborder="0" allowfullscreen></iframe>');
+      if (body.classList.contains('rus-lang')) {
+        videoHeader.innerText = "Преподаватель Анастасия Миронюк";
+      } else {
+        videoHeader.innerText = "Teacher Anastasia Mironiuk";
       };
     } else if (elemId === 'OlegSoloviev') {
       videoWrapper.insertAdjacentHTML('afterbegin', '<iframe src="https://www.youtube.com/embed/rtiQ7Wo26GU?modestbranding=1&controls=2&rel=0&playsinline=1" frameborder="0" allowfullscreen></iframe>');

@@ -11,7 +11,7 @@ $(document).ready(function () {
 			url: "mail.php", //Change
 			data: th.serialize()
 		}).done(function () {
-			bflDel.style.visibility = "hidden";
+			bflDel.style.display = "grid";
 			firstLessonFormWrap.classList.toggle("form-sended");
 			ym(91722697, 'reachGoal', 'formFirstLessonSent');
 			setTimeout(function () {
@@ -37,7 +37,7 @@ $(document).ready(function () {
 			url: "mail.php", //Change
 			data: th.serialize()
 		}).done(function () {
-			brFrDel.style.visibility = "hidden";
+			brFrDel.style.display = "grid";
 			confWrap.classList.toggle("form-sended");
 			ym(91722697, 'reachGoal', 'formBringFriendSent');
 			setTimeout(function () {
@@ -65,6 +65,31 @@ $(document).ready(function () {
 			blpDel.style.visibility = "hidden";
 			bflForm.classList.add("form-sended");
 			ym(91722697, 'reachGoal', 'formBookLessonSent');
+			setTimeout(function () {
+				// Done Functions
+				th.trigger("reset");
+			}, 1000);
+		});
+		return false;
+	});
+});
+
+const FQForm = document.querySelector(".faq-form-popup");
+const FQDel = document.querySelector(".faq-form-popup__del-wrap");
+
+$(document).ready(function () {
+
+	//E-mail Ajax Send
+	$("#faq-form").submit(function () { //Change
+		var th = $(this);
+		$.ajax({
+			type: "POST",
+			url: "mail.php", //Change
+			data: th.serialize()
+		}).done(function () {
+			FQDel.style.display = "grid";
+			FQForm.classList.add("form-sended");
+			ym(91722697, 'reachGoal', 'faqFormSend');
 			setTimeout(function () {
 				// Done Functions
 				th.trigger("reset");

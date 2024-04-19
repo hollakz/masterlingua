@@ -129,8 +129,9 @@
 
         </nav>
 
-        <button class="header__burger" type="button" aria-label="Mobile menu toggle">
-            <span></span>
+        <button class="header__burger" type="button" aria-label="Открыть меню">
+            <img src=".././img/icons/mobile-menu-btn.svg" alt="">
+            <!-- <span></span> -->
         </button>
 
     </div>
@@ -139,18 +140,26 @@
 <main class="main">
 
     <div class="">
-        <section class="get-started">
+        <section class="get-started-no-en" style="background-color: rgb(226, 226, 226);">
             <div class="get-started__gradient">
-
+                <img class="mobile-girl-img" src=".././img/mobile-girl.png" alt="">
                 <div class="get-started__flex container">
 
-                    <h1 class="get-started__header">Find your perfect <br> language
-                        teacher today
+                    <h1 class="get-started__header">Find your 
+                        
+                        <br> 
+                        <span>perfect teacher  </span><br>
+                        & start learning<br><span>today</span>.</h1>
                     </h1>
 
-                    <div class="get-started__text get-started__text_mb25">Learn foreign languages with the best
-                        professional teachers!
+                    <div class="get-started__text get-started__text_mb25">Start speaking a new language from the very first lesson with us!<br>
+                        Choose a language you want to learn:
                     </div>
+                    <ul class="mobile-advantages">
+                        <li>300+ <span>Студентов</span></li>
+                        <li>1K+ <span>Бесплатных материалов</span></li>
+                        <li>24+ <span>Преподаватели</span></li>
+                    </ul>
                     <div class="select-language-wrapper">
                         <p class="select-language-wrapper__text get-started__text_mb7 ">I want to learn:</p>
                         <div class="select-wrapper">
@@ -186,10 +195,15 @@
                             </ul>
 
                         </div>
-                        <a class="get-started__button" href="english-teachers.html">Let’s get started</a>
+                        <a class="get-started__button" href="english-teachers.html" data-lol="roll-btn">Let’s get started!</a>
                     </div>
+                    
                 </div>
-
+                <ul class="select_language_advantages_list">
+                    <li><img src=".././img/icons/Speak.svg" alt="">Speaking Clubs</li>
+                    <li><img src=".././img/icons/Briefcase.svg" alt="">Free English Materials</li>
+                    <li><img src=".././img/icons/idea.svg" alt="">Your Unique Learning Journey</li>
+                </ul>
             </div>
 
         </section>
@@ -478,6 +492,29 @@
                                     data-teacher="Julia Fomina">Book
                             </button>
                             <a class="profile-btn btn" href="teacher-julia-fomina.html"
+                               aria-label="Teacher's profile">Profile</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of teacher card -->
+
+                <!--Teacher card-->
+                <div class="teacher-card" data-languages="english">
+                    <div id="VictoriaKovalenko" class="teacher-card__img" role="button" tabindex="0"
+                         aria-label="Open the teacher's video presentation"><img
+                            src="../img/teachers/victoria-kovalenko.jpg" alt="" loading="lazy" aria-hidden="true">
+                        <span class="teacher-card__video-button"></span>
+                    </div>
+                    <div class="teacher-card__info">
+                        <div class="teacher-card__name" tabindex="0">Victoria Kovalenko</div>
+                        <div class="teacher-card__languages" tabindex="0">English teacher</div>
+                        <div class="teacher-card__bages"><span class="english-ic" role="figure"></span></div>
+                        <a class="teacher-card__link" href="teacher-victoria_kovalenko.html">See tariff plans</a>
+                        <div class="teacher-card__buttons">
+                            <button class="book-btn btn" type="button" aria-label="Book this teacher"
+                                    data-teacher="Victoria Kovalenko">Book
+                            </button>
+                            <a class="profile-btn btn" href="teacher-victoria_kovalenko.html"
                                aria-label="Teacher's profile">Profile</a>
                         </div>
                     </div>
@@ -881,6 +918,31 @@
                 <!--End 0f teacher card-->
 
                 <!--Teacher card-->
+                <div class="teacher-card" data-languages="italian">
+                    <div id="AnastasiaMironiuk" class="teacher-card__img" role="button" tabindex="0"
+                         aria-label="Open the teacher's video presentation"><img
+                            src="../img/teachers/anastasia-mironiuk.jpg" aria-hidden="true" alt="" loading="lazy">
+                        <span class="teacher-card__video-button"></span>
+                    </div>
+                    <div class="teacher-card__info">
+                        <div class="teacher-card__name" tabindex="0">Anastasia Mironiuk</div>
+                        <div class="teacher-card__languages" tabindex="0">Italian teacher</div>
+                        <div class="teacher-card__bages"></span><span class="italian-ic"
+                                                                                              role="figure"></span>
+                        </div>
+                        <a class="teacher-card__link" href="teacher-anastasia-mironiuk.html">See tariff plans</a>
+                        <div class="teacher-card__buttons">
+                            <button class="book-btn btn" type="button" aria-label="Book this teacher"
+                                    data-teacher="Anastasia Mironiuk">Book
+                            </button>
+                            <a class="profile-btn btn" href="teacher-anastasia-mironiuk.html"
+                               aria-label="Teacher's profile">Profile</a>
+                        </div>
+                    </div>
+                </div>
+                <!--End 0f teacher card-->
+
+                <!--Teacher card-->
                 <div class="teacher-card" data-languages="english">
                     <div id="OlegSoloviev" class="teacher-card__img" role="button" tabindex="0"
                          aria-label="Open the teacher's video presentation"><img src="../img/teachers/oleg-soloviev.jpg"
@@ -908,7 +970,43 @@
             <a class="more-teachers" href="">Check out all professional teachers</a>
 
         </div>
-
+        <div class="teachers_form_group book-first-lesson__form">
+            <div class="teachers_form_group_title">Book Your Free Trial Lesson</div>
+            <div class="teachers_form_group_subtitle">Start your learning journey with a complimentary first lesson! We'll assess your language skills and craft a personalised lesson plan tailored just for you.</div>
+            <form id="form-first-lesson" class="teachers_form" method="post" name="First-lesson">
+                <!-- Form Settings -->
+                <input type="hidden" name="project_name" value="site@masterlingua.pro">
+                <input type="hidden" name="admin_email" value="info@masterlingua.pro">
+                <input type="hidden" name="form_subject" value="Первый бесплатный урок">
+                <!-- End of Form Settings -->
+                <div class="teachers_form_name_group">
+                    <label for="">Your Name*</label>
+                    <input type="text" name="name" placeholder="Jules">
+                </div>
+                <div class="teachers_form_phone_group">
+                    <label for="">Phone number (Whats App or Telegram)*</label>
+                    <input type="text" name="phone" placeholder="+ (44) ______________">
+                </div>
+                <div class="teachers_form_email_group">
+                    <label for="">Email Address*</label>
+                    <input type="text" name="email" placeholder="jules@gmail.com">
+                </div>
+                <div class="teachers_form_text_group">
+                    <label for="">Tell us your preferred language and learning experiences:</label>
+                    <textarea name="comment" placeholder="I want to learn..."></textarea>
+                </div>
+                <input type="submit" value="Book Your Free Lesson Now">
+                <div class="agreetext">*By clicking ‘Book a free lesson’, you agree to our Terms of Use, our Privacy Policy and our Disclaimer.</div>
+            </form>
+            <img class="pngtree-man" src=".././img/pngtree-man.png" alt="">
+            <div class="teachers_form_popup book-first-lesson__del-wrap">
+                <div class="teachers_form_popup_wrapper">
+                    <div class="teachers_form_popup_title">Thank you!</div>
+                    <p>We will call you within 24h 
+                        to book your trial lesson </p>
+                </div>
+            </div>
+        </div>
     </section>
     <!-- End -->
 
@@ -930,7 +1028,6 @@
                 <div class="advantage__text">Calls with a teacher for only <b>$50 per week</b>.
                     This type of activity is a great way to perfect your English.
                 </div>
-                <a class="advantage__link" href="" hidden>Book a call</a>
             </div>
 
             <div class="advantage__description">
@@ -951,82 +1048,17 @@
         </div>
 
     </section>
-
-    <section class="book-first-lesson">
-
-        <div class="book-first-lesson__box">
-
-            <h2 class="book-first-lesson__header">Book your trial lesson with us now for free<span
-                    class="emoji-eyes-hearts"></span></h2>
-
-            <div class="book-first-lesson__wrap">
-
-                <div class="book-first-lesson__form">
-                    <!-- Form-->
-                    <form id="form-first-lesson" class="first-lesson-form" method="post">
-                        <!-- Form Settings -->
-                        <input type="hidden" name="project_name" value="site@masterlingua.pro">
-                        <input type="hidden" name="admin_email" value="info@masterlingua.pro">
-                        <input type="hidden" name="form_subject" value="I want a trial lesson">
-                        <!-- End of Form Settings -->
-                        <div class="book-first-lesson__del-wrap">
-                            <div class="first-lesson-form__flex">
-                                <input class="inline-input" name="Name" type="text" placeholder="Name *" required>
-                                <input class="inline-input" name="Phone" type="tel" placeholder="Phone number *"
-                                       required>
-                            </div>
-                            <input class="inline-input mb40-input w100-input" name="Email" type="email"
-                                   placeholder="Email address *" required>
-                            <button class="first-lesson-form-btn btn" type="submit" aria-label="Submit button">Book a
-                                free
-                                lesson
-                            </button>
-                        </div>
-                    </form>
-                    <!-- End of Form-->
-
-                    <div class="book-first-lesson__confirmation-body confirmation-body">
-                        <div class="confirmation-body__title">Thank you!</div>
-                        <div class="confirmation-body__text">We will contact you within 24h <br> to book your first
-                            trial lesson!
-                        </div>
-                        <div class="heart heart--white"></div>
-                    </div>
-
-                </div>
-
-
-                <div class="book-first-lesson__description form-description">
-                    <div class="form-description__title">Your first free trial consultation:</div>
-                    <ul class="form-description__list">
-                        <li>We test your language level</li>
-                        <li>We tell you how our school works</li>
-                        <li>We create personal lessons plan for you</li>
-                    </ul>
-                </div>
+    <section>
+        <div class="about_us_group">
+            <div class="about_us_content_wrapper">
+                <div class="about_us_pink_subtitle">About us</div>
+                <h2>MasterLingua – Where<br> Professional Teaching Meets<br> Your Choice!</h2>
+                <p>At MasterLingua, our core mission is to seamlessly connect learners with the ideal professional language teacher, ensuring a personalised journey towards language mastery.</p>
+                <a href="about-us.html" class="btn">Read more</a>
             </div>
-
-            <div class="confirm-text confirm-text_white">*By clicking “Book a free
-                lesson”, you agree to our Privacy Policy.
-            </div>
+            <img src=".././img/about_us_bg.png" alt="">
         </div>
     </section>
-
-    <section class="price_policy">
-        <div class="container">
-            <h2 class="corporate-clients__header" aria-label="Pricing policy">MasterLingua pricing policy</h2>
-            <div class="price_policy__box">
-                <div class="price_policy__text">
-
-                    <p style="text-align: center">In our school, each teacher has their own price they set - we adhere
-                        to this pricing policy because our teachers live in different parts of the world, therefore, the
-                        income that is comfortable for a particular teacher depends on the cost of living in the
-                        teacher’s country of residence.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="corporate-clients">
 
         <!-- <div class="corporate-clients__gradient"></div> -->
@@ -1059,61 +1091,55 @@
 
     </section>
 
-    <section id="bring-friend" class="bring-friend">
-
-        <div class="container-bring-friend">
-            <div class="bring-friend__wrap">
-                <h2 class="bring-friend__header">Bring a friend promo!</h2>
-
-                <div class="bring-friend__confirmation-wrapper">
-
-                    <div class="bring-friend__del-wrap">
-                        <div class="bring-friend__text">
-                            Don’t leave you friends behind! <br>
-                            <span class="bring-friend__text--bold">Get 10% off</span> for you and your friend for every
-                            new student
-                            you refer our way.
+    <section class="bring_friend_section">
+        <a id="bring-friend"></a>
+        <div class="bring_friend_group">
+            <h2>Bring a Friend, Enjoy Rewards!</h2>
+            <div class="bring_friend_group_subtitle">Fill in the form to invite your friends and earn a 10% discount for each friend who joins our school using your invitation!<br>
+                There's no limit – invite as many friends as you want, and every referral continues to earn you savings on your language journey.</div>
+            <div class="bring_friend_form_group bring-friend__confirmation-wrapper">
+                <div class="bring_friend_wrapper">
+                    <form id="form-bring-friend" class="bring_friend_form" method="post" name="bring-friend">
+                        <!-- Form Settings -->
+                        <input type="hidden" name="project_name" value="site@masterlingua.pro">
+                        <input type="hidden" name="admin_email" value="info@masterlingua.pro">
+                        <input type="hidden" name="form_subject" value="Акция приведи друга">
+                        <!-- End of Form Settings -->
+                        <div class="bring_friend_form_input_group">
+                            <label for="">Friend’s name*</label>
+                            <input type="text" name="friends name" placeholder="Jules">
                         </div>
-
-                        <div class="bring-friend__form">
-                            <!-- Form-->
-                            <form id="form-bring-friend" class="bring-friend-form" method="post">
-                                <!-- Form Settings -->
-                                <input type="hidden" name="project_name" value="site@masterlingua.pro">
-                                <input type="hidden" name="admin_email" value="info@masterlingua.pro">
-                                <input type="hidden" name="form_subject" value="Bring a friend">
-                                <!-- End of Form Settings -->
-                                <div class="bring-friend-form__flex">
-                                    <input class="inline-input fbf-friend-name" name="Friend's name" type="text"
-                                           aria-label="Friend's name" placeholder="Friend's name *" required>
-                                    <input class="inline-input fbf-friend-phone" name="Friend's email" type="email"
-                                           aria-label="Friend's email"
-                                           placeholder="Friend's email *" required>
-                                </div>
-                                <input class="inline-input mb30-input w100-input fbf-name" name="Name" type="text"
-                                       aria-label="Your name" placeholder="Your name *" required>
-                                <button class="bring-friend__btn btn" type="submit">Send the invitation</button>
-                            </form>
+                        <div class="bring_friend_form_input_group">
+                            <label for="">Friend’s email address*</label>
+                            <input type="text" name="email" placeholder="jules@gmail.com">
                         </div>
-
-                        <div class="confirm-text confirm-text_white">*By clicking “Send the invitation”, you agree to
-                            our Privacy Policy.
+                        <div class="bring_friend_form_input_group">
+                            <label for="">From (your name)*</label>
+                            <input type="text" name="your name" placeholder="Carlos">
                         </div>
+                        <input type="submit" value="Invite Your Friend!">
+                        <span class="agreetext_left">*By clicking ‘Book now’, you agree to our Terms of Use, our Privacy Policy and our Disclaimer.</span>
+                    </form>
+                    <div class="bring_friend_form_content_wrapper">
+                        <img src=".././img/bring_a_friends.png" alt="">
+                        <span class="bring_friend_form_content_list_title">Promotion Terms:</span>
+                        <ul>
+                            <li>Fill out the invitation form.</li>
+                            <li>Unlimited friend invites.</li>
+                            <li>Get 10% off per enrolled friend.</li>
+                            <li>More referrals, more savings.</li>
+                        </ul>
                     </div>
-
-                    <div class="bring-friend__confirmation-body confirmation-body">
-                        <div class="confirmation-body__title">Thank you!</div>
-                        <div class="confirmation-body__text">We will contact you within 24h <br> to book your first
-                            trial lesson!
-                        </div>
-                        <div class="heart"></div>
-                    </div>
-
                 </div>
-
+                <div class="bring_friend_popup bring-friend__del-wrap">
+                    <div class="bring_friend_popup_wrapper">
+                        <div class="bring_friend_popup_title">Thank you!</div>
+                        <p>You will get a 10% discount once your friend books a lesson with us!</p>
+                    </div>
+                </div>
             </div>
         </div>
-
+        
     </section>
 
     <div class="container">
@@ -1183,12 +1209,34 @@
 
                     <div class="faq-btn-wrapper">
                         <!-- <a href="" class="faq__btn_red">Read all FAQs</a> -->
-                        <a href="contacts.html" class="faq__btn">Contact us</a>
+                        <a href="contacts.html" class="faq__link">Contact us</a>
                     </div>
                 </div>
 
                 <div class="faq__right-block">
-                    <div class="faq-image"><img src="../img/operator.webp" alt="Contact us" loading="lazy"></div>
+                    <div class="faq_form_group faq-form-popup">
+                        <div class="faq_form_pink_title">Masterlingua Customer Service</div>
+                        <form id="faq-form" class="faq_form" method="post" name="Customer-Service">
+                            <!-- Form Settings -->
+                            <input type="hidden" name="project_name" value="site@masterlingua.pro">
+                            <input type="hidden" name="admin_email" value="info@masterlingua.pro">
+                            <input type="hidden" name="form_subject" value="Поддержка MasterLingua">
+                            <!-- End of Form Settings -->
+                            <div>Got questions? Write to us here, and we'll respond quickly!</div>
+                            <input type="text" name="name" placeholder="Your name">
+                            <input type="text" name="email" placeholder="Email">
+                            <textarea name="comment" placeholder="Type your question here..."></textarea>
+                            <input type="submit" value="Send">
+                        </form>
+                        <div class="faq-form-popup__del-wrap">
+                            <div class="bring_friend_popup_title">Thank you!</div>
+                        </div>
+                    </div>
+                    <div class="faq-btn-group">
+                        <a class="faq-btn-pink" href="">Read all FAQs</a>
+                        <a class="faq-btn-white" href="">Contact us</a>
+                    </div>
+                    <!-- <div class="faq-image"><img src="../img/operator.webp" alt="Contact us" loading="lazy"></div> -->
                 </div>
 
             </div>
